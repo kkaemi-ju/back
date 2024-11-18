@@ -1,0 +1,95 @@
+# Maven 관련 파일
+/target/
+/pom.xml.tag
+/pom.xml.releaseBackup
+/pom.xml.versionsBackup
+/logs/
+mvnw
+mvnw.cmd
+/.mvn/
+application.properties
+# Gradle 관련 파일
+/build/
+.gradle/
+/gradle/
+/gradle.properties
+*.jar
+*.war
+*.ear
+!gradle-wrapper.jar
+
+# IntelliJ IDEA 관련 파일
+/.idea/
+/*.iml
+/out/
+
+# Eclipse 관련 파일
+/.classpath
+/.project
+/.settings/
+/.apt_generated/
+/.factorypath/
+
+# VSCode 관련 파일
+/.vscode/
+
+# 환경 변수 파일
+*.env
+.env
+.env.local
+.env.*.local
+
+# OS별 시스템 파일
+.DS_Store
+Thumbs.db
+*.swp
+
+# 로그 파일
+*.log
+logs/
+
+# Spring Boot devtools 관련 파일
+/spring-boot-devtools.properties
+
+# 데이터베이스 파일
+*.h2.db
+*.mv.db
+*.db
+*.sqlite
+
+# 테스트 관련 파일
+/target/test-classes/
+/target/surefire-reports/
+/target/failsafe-reports/
+/coverage/
+*.lcov
+
+# Temp 파일
+*.tmp
+*.temp
+
+# Lombok 설정 파일
+.lombok.config
+
+# Docker 관련 파일
+/docker-compose.override.yml
+
+# IntelliJ 특정 파일 캐시
+.idea/
+*.iws
+
+# 기타 빌드 및 캐시 파일
+/.sass-cache/
+/.yarn-integrity
+.yarn-cache/
+/node_modules/
+.pnp
+.pnp.js
+
+# CI/CD 관련
+*.log
+*.out
+*.pid
+
+# Kubernetes Configs
+*.kube/

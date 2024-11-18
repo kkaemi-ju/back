@@ -1,0 +1,28 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper
+	namespace="com.ssafy.trip.mypage.model.mapper.MypageMapper">
+	<resultMap type="mypageDto" id="myoage">
+		<result column="user_id" property="userId" />
+		<result column="user_name" property="userName" />
+		<result column="user_pwd" property="userPwd" />
+		<result column="user_mail" property="userMail" />
+		<result column="sidos_no" property="sido" />
+		<result column="guguns_no" property="gugun" />
+	</resultMap>
+	<select id="getMypageInfo" parameterType="String" resultMap="myoage">
+		select user_name, user_id, user_mail, user_pwd, guguns_no, sidos_no from user
+		where user_id = #{userId}
+	</select>
+	<update id="modifyMypage" parameterType="map">
+	    update user set user_name = #{username}, user_mail = #{email} where user_id = #{userId}
+	</update>
+	<update id="modifyPwd" parameterType="map">
+	    update user set user_pwd = #{password} where user_id = #{username}
+	</update>
+	
+	<update id="deleteUser" parameterType="map">
+	    update user set is_withdraw = 1 where user_id = #{userId}
+	</update>
+</mapper>
