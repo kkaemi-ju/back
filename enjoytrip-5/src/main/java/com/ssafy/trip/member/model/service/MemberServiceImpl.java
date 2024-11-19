@@ -32,7 +32,11 @@ public class MemberServiceImpl implements MemberService {
 //		return sqlSession.getMapper(MemberMapper.class).loginMember(map);
 		return memberMapper.loginMember(memberDto);
 	}
-	
+	@Override
+	public MemberDto userInfo(String userId) throws Exception {
+		return memberMapper.userInfo(userId);
+	}
+
 
     @Override
     public void saveRefreshToken(String userId, String refreshToken) throws Exception {
