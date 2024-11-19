@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
-<%@ include file="/header.jsp"  %>
-<%@ include file="/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 <c:if test="${article eq null}">
 	<script>
 		alert("글이 삭제되었거나 부적절한 URL 접근입니다.");
@@ -54,16 +54,27 @@
 		</div>
 	</div>
 </div>
+<form id="form-param" method="get" action="">
+      <input type="hidden" id="pgno" name="pgno" value="${pgno}">
+      <input type="hidden" id="key" name="key" value="${key}">
+      <input type="hidden" id="word" name="word" value="${word}">
+    </form>
 <script>
 	document.querySelector("#btn-list").addEventListener("click", function () {
-		location.href = "${root}/article?action=list"
+		let form = document.querySelector("#form-param");
+	  	form.setAttribute("action", "${root}/article/list");
+	    form.submit();
 	});
 	
 	document.querySelector("#btn-mv-modify").addEventListener("click", function () {
-		location.href = "${root}/article?action=mvmodify&articleno=${article.boardId}";
+		let form = document.querySelector("#form-param");
+	  	form.setAttribute("action", "${root}/article/modify/${article.boardId}");
+	    form.submit();
 	});
 	document.querySelector("#btn-delete").addEventListener("click", function () {
-		location.href = "${root}/article?action=delete&articleno=${article.boardId}";
+		let form = document.querySelector("#form-param");
+	  	form.setAttribute("action", "${root}/article/delete/${article.boardId}");
+	    form.submit();
 	});
 </script>
-<%@ include file="/footer.jsp"%>
+<%@ include file="/WEB-INF/views/footer.jsp"%>

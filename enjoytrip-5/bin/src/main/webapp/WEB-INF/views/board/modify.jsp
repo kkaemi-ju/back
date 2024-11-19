@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
-<%@ include file="/header.jsp"  %>
-<%@ include file="/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
+
       <div class="row justify-content-center">
         <div class="col-lg-8 col-md-10 col-sm-12">
           <h2 class="my-3 py-3 shadow-sm bg-light text-center">
@@ -10,11 +11,13 @@
         </div>
         <div class="col-lg-8 col-md-10 col-sm-12">
           <form id="form-modify" method="POST" action="">
-          	<input type="hidden" name="action" value="modify">
-          	<input type="hidden" name="articleno" value="${article.boardId}">
+          	<input type="hidden" name="pgno" value="${pgno}">
+		    <input type="hidden" name="key" value="${key}">
+		   	<input type="hidden" name="word" value="${word}">
+          	<input type="hidden" name="boardId" value="${article.boardId}">
             <div class="mb-3">
               <label for="subject" class="form-label">제목 : </label>
-              <input type="text" class="form-control" id="subject" name="subject" value="${article.boardSubject}" />
+              <input type="text" class="form-control" id="boardSubject" name="boardSubject" value="${article.boardSubject}" />
             </div>
             <div class="mb-3">
               <label for="content" class="form-label">내용 : </label>
@@ -32,9 +35,14 @@
         </div>
       </div>
     </div>
+    <form id="form-param" method="get" action="">
+      <input type="hidden" id="pgno" name="pgno" value="${pgno}">
+      <input type="hidden" id="key" name="key" value="${key}">
+      <input type="hidden" id="word" name="word" value="${word}">
+    </form>
     <script>
       document.querySelector("#btn-modify").addEventListener("click", function () {
-        if (!document.querySelector("#subject").value) {
+        if (!document.querySelector("#boardSubject").value) {
           alert("제목 입력!!");
           return;
         } else if (!document.querySelector("#content").value) {
@@ -42,12 +50,14 @@
           return;
         } else {
           let form = document.querySelector("#form-modify");
-          form.setAttribute("action", "${root}/article");
+          form.setAttribute("action", "${root}/article/modify");
           form.submit();
         }
       });
       document.querySelector("#btn-list").addEventListener("click", function () {
-        location.href = "${root}/article?action=list&pgno=1&key=&word=";
+    	  let form = document.querySelector("#form-param");
+  	  	form.setAttribute("action", "${root}/article/list");
+  	    form.submit();
       });
     </script>
-<%@ include file="/footer.jsp"%>
+<%@ include file="/WEB-INF/views/footer.jsp"%>

@@ -1,0 +1,65 @@
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ssafy.trip.search.model.mapper.TripMapper">
+
+	<resultMap id="TripDtoMap" type="TripDto">
+		<id column="no" property="no" />
+		<result column="content_id" property="contentId" />
+		<result column="title" property="title" />
+		<result column="content_type_id" property="contentTypeId" />
+		<result column="area_code" property="areaCode" />
+		<result column="si_gun_gu_code" property="siGunGuCode" />
+		<result column="first_image1" property="firstImage1" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="map_level" property="mapLevel" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="tel" property="tel" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="homepage" property="homepage" />
+		<result column="overview" property="overview" />
+	</resultMap>
+
+	<!-- 지역만 검색 -->
+	<select id="siDoSearch" parameterType="int"
+		resultMap="TripDtoMap">
+		SELECT *
+		FROM attractions
+		WHERE area_code = #{sido} limit 2
+	</select>
+
+	<!-- 지역과 유형 검색 -->
+	<select id="siDoTypeSearch" parameterType="map"
+		resultMap="TripDtoMap">
+		SELECT *
+		FROM attractions
+		WHERE area_code = #{sido}
+		AND
+		content_type_id = #{type} limit 2
+	</select>
+
+	<!-- 지역, 유형, 검색어로 검색 -->
+	<select id="siDoTypeTitleSearch" parameterType="map"
+		resultMap="TripDtoMap">
+		SELECT *
+		FROM attractions
+		WHERE area_code = #{sido}
+		AND
+		content_type_id = #{type}
+		AND title LIKE CONCAT('%', #{title}, '%')
+		limit 2
+	</select>
+
+	<!-- 지역과 검색어로 검색 -->
+	<select id="siDoTitleSearch" parameterType="map"
+		resultMap="TripDtoMap">
+		SELECT *
+		FROM attractions
+		WHERE area_code = #{sido}
+		AND title
+		LIKE CONCAT('%', #{title}, '%') limit 2
+	</select>
+
+</mapper>

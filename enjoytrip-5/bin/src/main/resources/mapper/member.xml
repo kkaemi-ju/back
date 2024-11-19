@@ -1,14 +1,51 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.ssafy.trip.member.model.mapper.MemberMapper">
+<mapper
+	namespace="com.ssafy.trip.member.model.mapper.MemberMapper">
 	<resultMap type="memberDto" id="member">
-		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
+	    <result column="user_id" property="userId" />
+	    <result column="user_pwd" property="userPwd" />
+	    <result column="user_name" property="userName" />
+	    <result column="user_mail" property="userMail" />
+	    <result column="user_age" property="userAge" />
+	    <result column="is_withdraw" property="isWithdraw" />
+	    <result column="gender" property="gender" />
+	    <result column="created_at" property="createdAt" />
+	    <result column="guguns_no" property="gugunsNo" />
+	    <result column="sidos_no" property="sidosNo" />
 	</resultMap>
+
 	<select id="loginMember" parameterType="map" resultMap="member">
-		select user_id, user_name
-		from members
-		where user_id = #{userid} and user_password = #{userpwd}
+	    select
+	        user_id,
+	        user_pwd,
+	        user_name,
+	        user_mail,
+	        user_age,
+	        is_withdraw,
+	        gender,
+	        created_at,
+	        guguns_no,
+	        sidos_no
+	    from user
+	    where user_id = #{userid} 
+	      and user_pwd = #{userpwd} 
 	</select>
+
+
+	<select id="idCheck" parameterType="String" resultType="int">
+		select
+		count(user_id) from user where user_id=#{userid2}
+	</select>
+
+	<insert id="joinMember" parameterType="memberDto">
+		insert into user
+		values(#{userId}, #{userPwd}, #{userName}, #{userMail}, #{userAge},
+		#{isWithdraw}, #{gender}, NOW(),
+		#{gugunsNo}+1, #{sidosNo}+1)
+
+
+
+	</insert>
 </mapper>

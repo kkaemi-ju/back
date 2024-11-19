@@ -2,10 +2,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%-- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> --%>
-<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+<%@ taglib prefix="c" uri="jakarta.tags.core"%>
 <c:set var="root" value="${pageContext.request.contextPath}" />
 
-<c:set var="root" value="${pageContext.request.contextPath}" />
 
 <c:if test="${cookie.ssafy_id.value ne null}">
 
@@ -33,9 +32,8 @@
 	<nav
 		class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
 		<div class="container">
-			<a class="navbar-brand text-primary fw-bold"
-				href="${pageContext.request.contextPath}/index.jsp">  ENJOY TRIP
-			</a>
+			<a class="navbar-brand text-primary fw-bold" href="${root }/">
+				ENJOY TRIP </a>
 			<button class="navbar-toggler" type="button"
 				data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -46,44 +44,41 @@
 				<ul class="navbar-nav me-auto mb-lg-0">
 					<li class="nav-item"><a class="nav-link" aria-current="page"
 						href="#">공지사항</a></li>
-					
+
 				</ul>
 				<!-- 로그인 전 -->
 				<c:if test="${empty userinfo}">
-						<ul class="navbar-nav mb-2 me-2 mb-lg-0">
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="#" data-bs-toggle="modal" data-bs-target="#signupmodal">회원가입</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="#" data-bs-toggle="modal" data-bs-target="#loginmodal">로그인</a>
-							</li>
-						</ul>
+					<ul class="navbar-nav mb-2 me-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="#" data-bs-toggle="modal" data-bs-target="#signupmodal">회원가입</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="#" data-bs-toggle="modal" data-bs-target="#loginmodal">로그인</a>
+						</li>
+					</ul>
 				</c:if>
 				<c:if test="${not empty userinfo}">
-						<!-- 로그인 후 -->
-						<ul class="navbar-nav mb-2 me-2 mb-lg-0">
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${pageContext.request.contextPath}/trip?action=att">관광지정보조회</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${pageContext.request.contextPath}/trip/planlist.jsp">나만의 여행계획</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${pageContext.request.contextPath}/trip/hotplace.jsp">핫플자랑하기</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${root }/article?action=list&pgno=1&key=&word=">게시판</a>
-								
-								
-							</li>
-							
-							
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${pageContext.request.contextPath}/mypage?action=view&userId=${userinfo.userId}">마이페이지</a>
-							</li>
-							<li class="nav-item"><a class="nav-link" aria-current="page"
-								href="${root }/user?action=logout" id="logout">로그아웃</a></li>
-						</ul>
+					<!-- 로그인 후 -->
+					<ul class="navbar-nav mb-2 me-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root}/trip/">관광지정보조회</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root}/trip/planlist">나만의
+								여행계획</a></li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root}/trip/hotplace">핫플자랑하기</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root}/article/list?pgno=1&key=&word=">게시판</a></li>
+
+
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root }/mypage/">마이페이지</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" aria-current="page"
+							href="${root }/user/logout" id="logout">로그아웃</a></li>
+					</ul>
 				</c:if>
 			</div>
 		</div>
@@ -134,7 +129,7 @@
 				<div class="modal-footer" style="margin-right: 0;">
 					<button type="button" id="btn-login"
 						class="btn btn-outline-primary btn-sm">로그인</button>
-					
+
 					<button type="button" class="btn btn-outline-dark btn-sm"
 						data-bs-dismiss="modal">비밀번호찾기</button>
 				</div>
@@ -165,7 +160,7 @@
 								style="display: flex; margin: 0 auto; flex-direction: column;">
 								<label for="signup-name" class="form-label" style="width: 75px;">이름
 									:</label> <input type="text" class="form-control" id="username"
-									name="username" placeholder="이름..." required />
+									name="userName" placeholder="이름..." required />
 							</div>
 						</div>
 						<div class="row mb-3 mt-3">
@@ -173,7 +168,7 @@
 								style="display: flex; margin: 0 auto; flex-direction: column;">
 								<label for="userid2" class="form-label" style="width: 100px;">아이디
 									:</label> <input type="text" class="form-control" id="userid2"
-									name="userid2" placeholder="아이디..." required />
+									name="userId" placeholder="아이디..." required />
 							</div>
 							<div id="result-view" class="mb-3"></div>
 						</div>
@@ -182,16 +177,15 @@
 								style="display: flex; margin: 0 auto; flex-direction: column;">
 								<label for="userpwd2" class="form-label" style="width: 100px;">비밀번호
 									:</label> <input type="password" class="form-control" id="userpwd2"
-									name="userpwd2" placeholder="비밀번호..." required />
+									name="userPwd" placeholder="비밀번호..." required />
 							</div>
 						</div>
 						<div class="row mb-3 mt-3">
 							<div class="col-md-6"
 								style="display: flex; margin: 0 auto; flex-direction: column;">
-								<label for="pwdcheck" class="form-label"
-									style="width: 170px;">비밀번호확인 :</label> <input type="password"
-									class="form-control" id="pwdcheck" name="pwdcheck"
-									placeholder="비밀번호확인..." required />
+								<label for="pwdcheck" class="form-label" style="width: 170px;">비밀번호확인
+									:</label> <input type="password" class="form-control" id="pwdcheck"
+									name="pwdcheck" placeholder="비밀번호확인..." required />
 							</div>
 						</div>
 						<div class="row mb-3 mt-3">
@@ -201,9 +195,9 @@
 									style="width: 100px;">이메일 :</label>
 								<div class="input-group">
 									<input type="text" class="form-control" id="useremail"
-										name="useremail" placeholder="이메일아이디" aria-label="이메일 아이디"
+										name="userMail" placeholder="이메일아이디" aria-label="이메일 아이디"
 										required /> <span class="input-group-text">@</span> <select
-										class="form-select" id="userdomain" name="userdomain"
+										class="form-select" id="userdomain" name="userDomain"
 										aria-label="이메일 도메인">
 										<option value="gmail.com" selected>gmail.com</option>
 										<option value="naver.com">naver.com</option>
@@ -260,60 +254,55 @@
 	
 	
 	let isUseId = false;
-	let input = document.querySelector("#userid2");
-	console.log(input);
-	let resultDiv = document.querySelector("#result-view");
-	input.addEventListener("keyup", function () {
-		let checkid = input.value;
-		let len = checkid.length;
-		if (len < 4 || len > 16) {
-	          isUseId = false;
-	          resultDiv.setAttribute("class", "mb-3 fw-bold text-dark");
-	          resultDiv.innerHTML = "아이디는 4자이상 16자이하입니다.";
-	  	} else {
-	  		let url = "/user/${checkid}";
-	          // let url = `${root}/user?action=idcheck&checkid=${checkid}`;
-	          // TODO : AJAX ::> 위 url에서 아이디의 사용가능 여부를 얻고 화면에 출력.
-	          
-	          //fetch(url)
-	          //.then((response)=> response.text())
-	          //.then(data=>resultViewText(data));
-	          //json
-	          fetch(url)
-	          .then((response)=> response.json())
-	          .then(data => resultViewJSON(data));
-		}
-	});
+let input = document.querySelector("#userid2");
+console.log(input);
+let resultDiv = document.querySelector("#result-view");
 
-	function resultViewText(data) {
-        let val = data.split(",");
-        let id = val[0];
-        let cnt = val[1];
-        if (cnt == 0) {
-          isUseId = true;
-          resultDiv.setAttribute("class", "mb-3 text-success");
-          resultDiv.innerHTML = "<span class='fw-bold'>" + id + "</span>은 사용할 수 있습니다.";
-        } else {
-          isUseId = false;
-          resultDiv.setAttribute("class", "mb-3 text-danger");
-          resultDiv.innerHTML = "<span class='fw-bold'>" + id + "</span>은 사용할 수 없습니다.";
-        }
-	}
+input.addEventListener("keyup", function () {
+    let checkid = input.value;
+    let len = checkid.length;
+    
+    if (len < 4 || len > 16) {
+        isUseId = false;
+        resultDiv.setAttribute("class", "mb-3 fw-bold text-dark");
+        resultDiv.innerHTML = "아이디는 4자이상 16자이하입니다.";
+    } else {
+    	let url = "/user/" + checkid;
+         
+        fetch(url)
+            .then((response) => response.json())
+            .then(data => resultViewJSON(data));
+    }
+});
 
-	function resultViewJSON(data) {
+function resultViewText(data) {
+    let val = data.split(",");
+    let id = val[0];
+    let cnt = val[1];
+    if (cnt == 0) {
+        isUseId = true;
+        resultDiv.setAttribute("class", "mb-3 text-success");
+        resultDiv.innerHTML = "<span class='fw-bold'>" + id + "</span>은 사용할 수 있습니다.";
+    } else {
+        isUseId = false;
+        resultDiv.setAttribute("class", "mb-3 text-danger");
+        resultDiv.innerHTML = "<span class='fw-bold'>" + id + "</span>은 사용할 수 없습니다.";
+    }
+}
 
-        if (data.cnt == 0) {
-          isUseId = true;
-          resultDiv.setAttribute("class", "mb-3 text-primary");
-          resultDiv.innerHTML =
-            "<span class='fw-bold'>" + data.checkid + "</span>은 사용할 수 있습니다.";
-        } else {
-          isUseId = false;
-          resultDiv.setAttribute("class", "mb-3 text-warning");
-          resultDiv.innerHTML =
-            "<span class='fw-bold'>" + data.checkid + "</span>은 사용할 수 없습니다.";
-        }
-	}
+function resultViewJSON(data) {
+	console.log(data);
+    if (data.cnt == 0) {
+        isUseId = true;
+        resultDiv.setAttribute("class", "mb-3 text-primary");
+        resultDiv.innerHTML = "<span class='fw-bold'>" + data.checkid + "</span>은 사용할 수 있습니다.";
+    } else {
+        isUseId = false;
+        resultDiv.setAttribute("class", "mb-3 text-warning");
+        resultDiv.innerHTML = "<span class='fw-bold'>" + data.checkid + "</span>은 사용할 수 없습니다.";
+    }
+}
+
 
       
 	document.querySelector("#btn-join").addEventListener("click", function () {
@@ -340,7 +329,7 @@
 		}
         else {
           let form = document.querySelector("#form-join");
-          form.setAttribute("action", "user");
+          form.setAttribute("action", "${root}/user/join");
           form.submit();
         }
       });

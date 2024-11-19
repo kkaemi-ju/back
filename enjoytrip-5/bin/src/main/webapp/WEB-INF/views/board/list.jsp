@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8"%>
-<%@ include file="/header.jsp"  %>
-<%@ include file="/common/header.jsp" %>
+<%@ include file="/WEB-INF/views/header.jsp" %>
+<%@ include file="/WEB-INF/views/common/header.jsp" %>
 		<!-- 상단 navbar include -->
 
       <div class="row justify-content-center">
@@ -19,7 +19,6 @@
             </div>
             <div class="col-md-7 offset-3">
               <form class="d-flex" id="form-search" action="">
-                <input type="hidden" name="action" value="list"/>
                 <input type="hidden" name="pgno" value="1"/>
                 <select
                   name="key"
@@ -27,9 +26,8 @@
                   class="form-select form-select-sm ms-5 me-1 w-50"
                   aria-label="검색조건"
                 >
-                  <option value="" selected>검색조건</option>
-                  <option value="article_no">글번호</option>
-                  <option value="subject">제목</option>
+                  <option selected>검색조건</option>
+                  <option value="board_subject">제목</option>
                   <option value="user_id">작성자</option>
                 </select>
                 <div class="input-group input-group-sm">
@@ -82,22 +80,30 @@
       <input type="hidden" id="p-key" name="key" value="">
       <input type="hidden" id="p-word" name="word" value="">
     </form>
+    <form id="form-no-param" method="get" action="${root}/article/view">
+      <input type="hidden" name="pgno" value="${pgno}">
+      <input type="hidden" name="key" value="${key}">
+      <input type="hidden" name="word" value="${word}">
+      <input type="hidden" id="articleno" name="articleno" value="">
+    </form>
     <script>
+    
+
       let titles = document.querySelectorAll(".article-title");
       titles.forEach(function (title) {
         title.addEventListener("click", function () {
-          console.log(this.getAttribute("data-no"));
-          location.href = "${root}/article?action=view&articleno=" + this.getAttribute("data-no");
+        	document.querySelector("#articleno").value = this.getAttribute("data-no");
+            document.querySelector("#form-no-param").submit();
         });
       });
 
       document.querySelector("#btn-mv-register").addEventListener("click", function () {
-        location.href = "${root}/article?action=mvwrite";
+        location.href = "${root}/article/write";
       });
       
       document.querySelector("#btn-search").addEventListener("click", function () {
     	  let form = document.querySelector("#form-search");
-          form.setAttribute("action", "${root}/article");
+          form.setAttribute("action", "${root}/article/list");
           form.submit();
       });
       
@@ -113,4 +119,4 @@
         });
       });
     </script>
-<%@ include file="/footer.jsp"%>
+ <%@ include file="/WEB-INF/views/footer.jsp"%>
