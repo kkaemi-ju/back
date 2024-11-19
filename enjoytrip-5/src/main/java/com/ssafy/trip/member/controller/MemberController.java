@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.trip.member.model.MemberDto;
 import com.ssafy.trip.member.model.service.MemberService;
+import com.ssafy.trip.util.JWTUtil;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,9 +24,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/user")
 public class MemberController {
     private final MemberService memberService;
-
-    public MemberController(MemberService memberService) {
+    private final JWTUtil jwtUtil;
+    public MemberController(MemberService memberService, JWTUtil jwtUtil) {
         this.memberService = memberService;
+        this.jwtUtil = jwtUtil;
     }
 
     @Operation(summary="사용자 id 확인", description="사용자 아이디가 db에 존재하는지 확인")
@@ -68,17 +70,17 @@ public class MemberController {
         try {
             MemberDto loginUser = memberService.loginMember(memberDto);
             if(loginUser != null) {
-//                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
-//                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
-//                log.debug("access token : {}", accessToken);
-//                log.debug("refresh token : {}", refreshToken);
+                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+                log.debug("access token : {}", accessToken);
+                log.debug("refresh token : {}", refreshToken);
                 
 //                발급받은 refresh token 을 DB에 저장.
-//                memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
+                memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
                 
 //                JSON 으로 token 전달.
-//                resultMap.put("access-token", accessToken);
-//                resultMap.put("refresh-token", refreshToken);
+                resultMap.put("access-token", accessToken);
+                resultMap.put("refresh-token", refreshToken);
 //                
                 status = HttpStatus.CREATED;
             } else {

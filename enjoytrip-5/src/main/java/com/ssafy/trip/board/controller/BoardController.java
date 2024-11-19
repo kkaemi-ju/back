@@ -26,8 +26,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.ssafy.trip.board.model.BoardDto;
 import com.ssafy.trip.board.model.service.BoardService;
 import com.ssafy.trip.member.model.MemberDto;
-import com.ssafy.util.PageNavigation;
-import com.ssafy.util.ParameterCheck;
+import com.ssafy.trip.util.PageNavigation;
+import com.ssafy.trip.util.ParameterCheck;
 
 import jakarta.servlet.http.HttpSession;
 

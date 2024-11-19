@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ssafy.trip.board.model.BoardDto;
 import com.ssafy.trip.board.model.mapper.BoardMapper;
-import com.ssafy.util.BoardSize;
-import com.ssafy.util.PageNavigation;
-import com.ssafy.util.SizeConstant;
+import com.ssafy.trip.util.BoardSize;
+import com.ssafy.trip.util.PageNavigation;
+import com.ssafy.trip.util.SizeConstant;
 
 @Service
 public class BoardServiceImpl implements BoardService {

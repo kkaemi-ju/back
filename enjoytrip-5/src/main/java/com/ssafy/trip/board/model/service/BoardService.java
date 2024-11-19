@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.trip.board.model.BoardDto;
-import com.ssafy.util.PageNavigation;
+import com.ssafy.trip.util.PageNavigation;
 
 public interface BoardService {
 

@@ -11,6 +11,7 @@
 	    <result column="is_withdraw" property="isWithdraw" />
 	    <result column="created_at" property="createdAt" />
 	    <result column="role" property="role" />
+	    <result column="token" property="refreshToken"/>
 	</resultMap>
 
 	<select id="loginMember" parameterType="map" resultMap="member">
@@ -38,8 +39,27 @@
 		values(#{userId}, #{userPwd}, #{userName}, #{userMail}, #{userAge},
 		#{isWithdraw}, #{gender}, NOW(),
 		#{gugunsNo}+1, #{sidosNo}+1)
-
+		
 
 
 	</insert>
+	
+	
+	<update id="saveRefreshToken" parameterType="map">
+        update user
+        set token = #{token}
+        where user_id = #{userId}
+    </update>
+    
+    <select id="getRefreshToken" parameterType="string" resultType="string">
+        select token
+        from user
+        where user_id = #{userId}
+    </select>
+    
+    <update id="deleteRefreshToken" parameterType="map">
+        update user
+        set token = #{token, jdbcType=VARCHAR}
+        where user_id = #{userId}
+    </update>
 </mapper>
