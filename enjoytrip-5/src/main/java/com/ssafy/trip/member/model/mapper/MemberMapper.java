@@ -13,5 +13,5 @@ public interface MemberMapper {
 	void joinMember(MemberDto memberDto) throws SQLException;
 
 	int idCheck(String userId) throws SQLException;
-	MemberDto loginMember(Map<String, String> map) throws SQLException;
+	MemberDto loginMember(MemberDto memberDto) throws SQLException;
 }

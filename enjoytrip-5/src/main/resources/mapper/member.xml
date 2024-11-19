@@ -7,13 +7,10 @@
 	    <result column="user_id" property="userId" />
 	    <result column="user_pwd" property="userPwd" />
 	    <result column="user_name" property="userName" />
-	    <result column="user_mail" property="userMail" />
-	    <result column="user_age" property="userAge" />
+	    <result column="user_email" property="userEmail" />
 	    <result column="is_withdraw" property="isWithdraw" />
-	    <result column="gender" property="gender" />
 	    <result column="created_at" property="createdAt" />
-	    <result column="guguns_no" property="gugunsNo" />
-	    <result column="sidos_no" property="sidosNo" />
+	    <result column="role" property="role" />
 	</resultMap>
 
 	<select id="loginMember" parameterType="map" resultMap="member">
@@ -21,16 +18,13 @@
 	        user_id,
 	        user_pwd,
 	        user_name,
-	        user_mail,
-	        user_age,
+	        user_email,
 	        is_withdraw,
-	        gender,
 	        created_at,
-	        guguns_no,
-	        sidos_no
+	        role
 	    from user
-	    where user_id = #{userid} 
-	      and user_pwd = #{userpwd} 
+	    where user_id = #{userId} 
+	      and user_pwd = #{userPwd} 
 	</select>
 
 

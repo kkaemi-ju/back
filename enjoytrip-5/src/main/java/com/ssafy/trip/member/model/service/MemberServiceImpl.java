@@ -27,8 +27,8 @@ public class MemberServiceImpl implements MemberService {
 		return memberMapper.idCheck(userId);
 	}
 	@Override
-	public MemberDto loginMember(Map<String, String> map) throws Exception {
+	public MemberDto loginMember(MemberDto memberDto) throws Exception {
 //		return sqlSession.getMapper(MemberMapper.class).loginMember(map);
-		return memberMapper.loginMember(map);
+		return memberMapper.loginMember(memberDto);
 	}
 }

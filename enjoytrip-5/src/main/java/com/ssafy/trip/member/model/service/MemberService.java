@@ -9,5 +9,5 @@ public interface MemberService {
 	void joinMember(MemberDto memberDto) throws Exception;
 
 	int idCheck(String userId) throws Exception;
-	public MemberDto loginMember(Map<String, String> map) throws Exception;
+	public MemberDto loginMember(MemberDto memberDto) throws Exception;
 }
