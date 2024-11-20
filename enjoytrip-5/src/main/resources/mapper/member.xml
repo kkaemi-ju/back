@@ -26,7 +26,10 @@
 	    from user
 	    where user_id = #{userId} 
 	      and user_pwd = #{userPwd} 
+	      and is_withdraw=0 
 	</select>
+	
+	
 	<select id="userInfo" parameterType="string" resultMap="member">
 		select user_name, user_id, user_email, created_at
 		from user

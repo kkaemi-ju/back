@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.trip.member.model.MemberDto;
 import com.ssafy.trip.member.model.mapper.MemberMapper;
 import com.ssafy.trip.mypage.model.MypageDto;
 import com.ssafy.trip.mypage.model.mapper.MypageMapper;
@@ -26,19 +27,19 @@ public class MypageServiceImpl implements MypageService {
 
 
 	@Override
-	public void modifyMypage(Map<String, String> map) {
-		mypageMapper.modifyMypage(map);
+	public void modifyMypage(MemberDto memberDto) {
+		mypageMapper.modifyMypage(memberDto);
 		
 	}
 	@Override
-	public void modifyPwd(Map<String, String> map) {
-		mypageMapper.modifyPwd(map);
+	public void modifyPwd(MemberDto memberDto) {
+		mypageMapper.modifyPwd(memberDto);
 		
 	}
 	
 	@Override
-	public void deleteUser(Map<String, String> map) {
-		mypageMapper.deleteUser(map);
+	public void deleteUser(String userId) {
+		mypageMapper.deleteUser(userId);
 		
 	}
 
