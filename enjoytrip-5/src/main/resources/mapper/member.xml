@@ -35,14 +35,11 @@
 
 	<select id="idCheck" parameterType="String" resultType="int">
 		select
-		count(user_id) from user where user_id=#{userid2}
+		count(user_id) from user where user_id=#{userId}
 	</select>
 
 	<insert id="joinMember" parameterType="memberDto">
-		insert into user
-		values(#{userId}, #{userPwd}, #{userName}, #{userMail}, #{userAge},
-		#{isWithdraw}, #{gender}, NOW(),
-		#{gugunsNo}+1, #{sidosNo}+1)
+		insert into user values(#{userId}, #{userPwd}, #{userName}, #{userEmail}, NOW(), 0, 0, null)
 		
 
 

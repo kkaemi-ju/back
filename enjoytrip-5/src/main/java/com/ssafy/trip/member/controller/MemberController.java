@@ -3,8 +3,10 @@ package com.ssafy.trip.member.controller;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.trip.member.model.MemberDto;
@@ -26,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
     private final MemberService memberService;
     private final JWTUtil jwtUtil;
+    
     public MemberController(MemberService memberService, JWTUtil jwtUtil) {
         this.memberService = memberService;
         this.jwtUtil = jwtUtil;
@@ -34,10 +37,15 @@ public class MemberController {
     @Operation(summary="사용자 id 확인", description="사용자 아이디가 db에 존재하는지 확인")
     @GetMapping("/{userid}")
     public ResponseEntity<Map<String, Object>> idCheck(@PathVariable("userid") String userId) {
-        log.debug("idCheck userid : {}", userId);
+    	log.debug("idCheck userid : {}", userId);
         try {
+            // `cnt`가 0이면 ID가 존재하지 않음, 0보다 크면 ID가 이미 존재
             int cnt = memberService.idCheck(userId);
-            return ResponseEntity.ok(Map.of("checkid", userId, "cnt", cnt));
+
+            // `available` 키로 true/false 값 반환
+            boolean available = cnt == 0;
+
+            return ResponseEntity.ok(Map.of("available", available));
         } catch (Exception e) {
             log.error("Error during ID check", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -49,10 +57,12 @@ public class MemberController {
     @PostMapping("/join")
     public ResponseEntity<Map<String, String>> join(@RequestBody MemberDto memberDto) {
         log.debug("memberDto info: {}", memberDto);
-        String fullEmail = memberDto.getUserEmail();
-        memberDto.setUserEmail(fullEmail);
         try {
+//        	// 비밀번호 암호화
+//            String encodedPassword = passwordEncoder.encode(memberDto.getUserPwd());
+//            memberDto.setUserPwd(encodedPassword);
             memberService.joinMember(memberDto);
+            
             return ResponseEntity.status(HttpStatus.CREATED)
                     .body(Map.of("message", "회원가입 성공"));
         } catch (Exception e) {
