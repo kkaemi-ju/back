@@ -42,6 +42,7 @@ public class BoardServiceImpl implements BoardService {
 		int start = pgNo * SizeConstant.LIST_SIZE - SizeConstant.LIST_SIZE;
 		param.put("start", start);
 		param.put("listsize", SizeConstant.LIST_SIZE);
+		param.put("boardTypeId", Integer.parseInt(map.get("boardTypeId")));
 
 		return boardMapper.listArticle(param);
 	}
@@ -93,7 +94,6 @@ public class BoardServiceImpl implements BoardService {
 		// TODO : BoardDaoImpl의 modifyArticle 호출
 		System.out.println("service!!");
 		System.out.println(boardDto.getBoardId());
-		System.out.println(boardDto.getBoardSubject());
 		System.out.println(boardDto.getContent());
 		boardMapper.modifyArticle(boardDto);
 	}
