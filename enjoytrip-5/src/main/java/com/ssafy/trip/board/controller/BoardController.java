@@ -1,6 +1,9 @@
 package com.ssafy.trip.board.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.board.model.service.BoardService;
 import com.ssafy.trip.util.PageNavigation;
 import lombok.extern.slf4j.Slf4j;
@@ -68,25 +71,42 @@ public class BoardController {
 
     // 게시글 작성
     @PostMapping
-    public ResponseEntity<?> write(
-            @SessionAttribute(name = "userinfo", required = false) String userId,
-            @RequestBody BoardDto boardDto) {
-        if (userId == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("error", "로그인이 필요합니다."));
-        }
+    public ResponseEntity<?> write(@RequestBody BoardDto boardDto) {
         try {
-            boardDto.setUserId(userId);
-            boardService.writeArticle(boardDto);
+            
+            System.out.println("게시글 데이터: " + boardDto);
+            if (boardDto.getUserId() == null || boardDto.getUserId().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+            }
+
+            // 게시글 작성 서비스 호출
+            int boardId = boardService.writeArticle(boardDto);
             return ResponseEntity.status(HttpStatus.CREATED)
-                .body(Map.of("message", "게시글 작성 성공"));
+                    .body(Map.of("message", "게시글 작성 성공", "boardId", boardId));
         } catch (Exception e) {
             log.error("Error creating article", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(Map.of("error", "게시글 작성 중 오류 발생"));
+                    .body(Map.of("error", "게시글 작성 중 오류 발생"));
         }
     }
+    
+ // 게시글 작성
+    @PostMapping("/fileUpload")
+    public ResponseEntity<?> uploadFile(@RequestBody List<FileDto> fileDtos) {
+        try {
+            
+            System.out.println("파일  데이터: " + fileDtos);
 
+            boardService.saveFilestoDatabase(fileDtos);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of("message", "파일 저장 성공 "));
+        } catch (Exception e) {
+            log.error("Error uploading files", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "파일 저장 중 오류 발생"));
+        }
+    }
     // 게시글 수정
     @PutMapping("/{articleno}")
     public ResponseEntity<?> modify(

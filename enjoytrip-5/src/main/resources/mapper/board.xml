@@ -15,15 +15,24 @@
 		<result column ="attraction_name" property="attractionName"/>
 		<result column="created_at" property="createdAt"/>
 	</resultMap>
-    <insert id="writeArticle" parameterType="boardDto">
-        INSERT INTO board (user_id, title, content, created_at)
-        VALUES (#{userId}, #{boardSubject}, #{content}, NOW())
+    <insert id="writeArticle" parameterType="boardDto" useGeneratedKeys = "true" keyProperty="boardId">
+        INSERT INTO board (board_type_id, user_id, title, content, created_at)
+        VALUES (#{boardId},#{userId}, #{title}, #{content}, NOW())
     </insert>
+    <insert id="uploadFile" parameterType="list">
+    INSERT INTO board_file (board_id, file_url)
+    VALUES
+    <foreach collection="list" item="file" separator=",">
+        (#{file.boardId}, #{file.fileUrl})
+    </foreach>
+</insert>
+    
 	<sql id="search">
 		<if test="word != null and word != ''">
 			<if test="key == 'title'">
 				and title like concat('%', #{word}, '%')
 			</if>
+			
 			<if test="key != 'title'">
 				and b.${key} = #{word}
 			</if>
@@ -42,7 +51,7 @@
         FROM board
         <if test="key != null and word != null and !key.isEmpty() and !word.isEmpty()">
             <choose>
-                <when test="key == 'board_subject'">
+                <when test="key == 'title'">
                     WHERE title LIKE CONCAT('%', #{word}, '%')
                 </when>
                 <otherwise>
@@ -55,21 +64,21 @@
     <select id="getArticle" parameterType="int" resultMap="article">
         SELECT board_id, user_id, title, content, view, created_at
         FROM board
-        WHERE board_id = #{articleNo}
+        WHERE board_id = #{boardId}
     </select>
 
     <update id="updateHit" parameterType="int">
-        UPDATE board SET view = COALESCE(view, 0) + 1  WHERE board_id = #{articleNo}
+        UPDATE board SET view = COALESCE(view, 0) + 1  WHERE board_id = #{boardId}
     </update>
 
     <update id="modifyArticle" parameterType="boardDto">
         UPDATE board
-        SET title = #{boardSubject}, content = #{content}
+        SET title = #{title}, content = #{content}
         WHERE board_id = #{boardId}
     </update>
 
     <delete id="deleteArticle" parameterType="int">
-        DELETE FROM board WHERE board_id = #{articleNo}
+        DELETE FROM board WHERE board_id = #{boardId}
     </delete>
 
 </mapper>

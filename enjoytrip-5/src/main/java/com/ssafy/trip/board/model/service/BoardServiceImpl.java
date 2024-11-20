@@ -1,15 +1,24 @@
 package com.ssafy.trip.board.model.service;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.board.model.mapper.BoardMapper;
 import com.ssafy.trip.util.BoardSize;
 import com.ssafy.trip.util.PageNavigation;
@@ -26,8 +35,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 	@Override
 	@Transactional
-	public void writeArticle(BoardDto boardDto) throws Exception {
+	public int writeArticle(BoardDto boardDto) throws Exception {
+		
 		boardMapper.writeArticle(boardDto);
+		return boardDto.getBoardId();
+		
 	}
 
 	@Override
@@ -105,6 +117,72 @@ public class BoardServiceImpl implements BoardService {
 
 		boardMapper.deleteArticle(articleNo);
 
+	}
+	@Override
+	public void uploadFile(List<FileDto> fileDtos) throws Exception {
+		boardMapper.uploadFile(fileDtos);
+		
+	}
+	
+	@Override
+	public List<String> saveFiles(List<FileDto> fileDtos) throws Exception {
+	    List<String> filePaths = new ArrayList<>();
+
+	    // 사용자의 홈 디렉토리 기반으로 업로드 경로 설정
+	    String userHome = System.getProperty("user.home");
+	    String uploadDir = Paths.get(userHome, "enjoytrip", "uploads").toString();
+
+	    for (FileDto fileDto : fileDtos) {
+	        // 게시글 ID로 디렉토리 설정
+	        String boardIdDir = Paths.get(uploadDir, String.valueOf(fileDto.getBoardId())).toString();
+	        File boardDirectory = new File(boardIdDir);
+
+	        // 디렉토리가 없으면 생성
+	        if (boardDirectory.exists() && !boardDirectory.isDirectory()) {
+	            throw new IOException("디렉토리 경로에 동일한 이름의 파일이 존재합니다: " + boardIdDir);
+	        }
+	        if (!boardDirectory.exists() && !boardDirectory.mkdirs()) {
+	            throw new IOException("디렉토리 생성 실패: " + boardIdDir);
+	        }
+
+	        try {
+	            // Base64 데이터에서 프로토콜 헤더 제거
+	            String base64Data = fileDto.getFileUrl().replaceFirst("^data:image/\\w+;base64,", "");
+
+	            // Base64 디코딩
+	            byte[] fileData = Base64.getDecoder().decode(base64Data);
+
+	            // 고유 파일 이름 생성
+	            String fileName = UUID.randomUUID().toString() + ".jpg";
+	            String filePath = Paths.get(boardIdDir, fileName).toString();
+
+	            // 파일 저장
+	            try (OutputStream outputStream = new FileOutputStream(filePath)) {
+	                outputStream.write(fileData);
+	            }
+
+	            // 저장된 파일 경로 리스트에 추가
+	            filePaths.add(filePath);
+
+	        } catch (IllegalArgumentException e) {
+	            throw new Exception("잘못된 Base64 데이터: " + fileDto.getFileUrl(), e);
+	        } catch (IOException e) {
+	            throw new IOException("파일 저장 실패: " + fileDto.getFileUrl(), e);
+	        }
+	    }
+
+	    return filePaths;
+	}
+	
+	@Override
+	public void saveFilestoDatabase(List<FileDto> fileDtos) throws Exception {
+		List<String> filePaths = saveFiles(fileDtos);
+
+        // 데이터베이스에 저장
+        for (int i = 0; i < fileDtos.size(); i++) {
+            fileDtos.get(i).setFileUrl(filePaths.get(i));
+        }
+        boardMapper.uploadFile(fileDtos);
 	}
 
 }
