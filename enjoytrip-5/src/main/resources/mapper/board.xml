@@ -7,34 +7,35 @@
 	<resultMap type="boardDto" id="article">
 		<result column="board_id" property="boardId"/>
 		<result column="user_id" property="userId"/>
-		<result column="board_subject" property="boardSubject"/>
+		<result column="title" property="title"/>
 		<result column="content" property="content"/>
-		<result column="content_type" property="contentType"/>
+		<result column="board_type_id" property="boardTypeId"/>
 		<result column="view" property="view"/>
+		<result column="attraction_url" property="attractionUrl"/>
+		<result column ="attraction_name" property="attractionName"/>
 		<result column="created_at" property="createdAt"/>
 	</resultMap>
     <insert id="writeArticle" parameterType="boardDto">
-        INSERT INTO board (user_id, board_subject, content, created_at)
+        INSERT INTO board (user_id, title, content, created_at)
         VALUES (#{userId}, #{boardSubject}, #{content}, NOW())
     </insert>
 	<sql id="search">
 		<if test="word != null and word != ''">
-			<if test="key == 'board_subject'">
-				and board_subject like concat('%', #{word}, '%')
+			<if test="key == 'title'">
+				and title like concat('%', #{word}, '%')
 			</if>
-			<if test="key != 'board_subject'">
+			<if test="key != 'title'">
 				and b.${key} = #{word}
 			</if>
 		</if>
 	</sql>
-    <select id="listArticle" parameterType="map" resultMap="article">
-        SELECT b.board_id, b.user_id, b.board_subject, b.content, b.content_type, b.view, b.created_at
-       	from board b, user m
-       	where b.user_id = m.user_id
-       	<include refid="search"></include>
-       	order by b.board_id desc
-       	limit #{start}, #{listsize}
-    </select>
+   <select id="listArticle" parameterType="map" resultMap="article">
+  SELECT *
+  FROM board b
+  where board_type_id = #{boardTypeId}
+  ORDER BY b.board_id DESC
+  LIMIT #{start}, #{listsize}
+</select>
 
     <select id="getTotalArticleCount" parameterType="map" resultType="int">
         SELECT COUNT(board_id)
@@ -42,7 +43,7 @@
         <if test="key != null and word != null and !key.isEmpty() and !word.isEmpty()">
             <choose>
                 <when test="key == 'board_subject'">
-                    WHERE board_subject LIKE CONCAT('%', #{word}, '%')
+                    WHERE title LIKE CONCAT('%', #{word}, '%')
                 </when>
                 <otherwise>
                     WHERE ${key} = #{word}
@@ -52,7 +53,7 @@
     </select>
 
     <select id="getArticle" parameterType="int" resultMap="article">
-        SELECT board_id, user_id, board_subject, content, view, created_at
+        SELECT board_id, user_id, title, content, view, created_at
         FROM board
         WHERE board_id = #{articleNo}
     </select>
@@ -63,7 +64,7 @@
 
     <update id="modifyArticle" parameterType="boardDto">
         UPDATE board
-        SET board_subject = #{boardSubject}, content = #{content}
+        SET title = #{boardSubject}, content = #{content}
         WHERE board_id = #{boardId}
     </update>
 
