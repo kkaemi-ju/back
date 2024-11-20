@@ -27,7 +27,7 @@
 		resultMap="TripDtoMap">
 		SELECT *
 		FROM attractions
-		WHERE area_code = #{sido} limit 2
+		WHERE area_code = #{areaCode} limit 100
 	</select>
 
 	<!-- 지역과 유형 검색 -->
@@ -37,7 +37,7 @@
 		FROM attractions
 		WHERE area_code = #{sido}
 		AND
-		content_type_id = #{type} limit 2
+		content_type_id = #{type} limit 100
 	</select>
 
 	<!-- 지역, 유형, 검색어로 검색 -->
@@ -48,8 +48,7 @@
 		WHERE area_code = #{sido}
 		AND
 		content_type_id = #{type}
-		AND title LIKE CONCAT('%', #{title}, '%')
-		limit 2
+		AND title LIKE CONCAT('%', #{title}, '%') limit 100
 	</select>
 
 	<!-- 지역과 검색어로 검색 -->
@@ -59,7 +58,7 @@
 		FROM attractions
 		WHERE area_code = #{sido}
 		AND title
-		LIKE CONCAT('%', #{title}, '%') limit 2
+		LIKE CONCAT('%', #{title}, '%') limit 100
 	</select>
 
 </mapper>
