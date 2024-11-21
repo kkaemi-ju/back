@@ -7,12 +7,33 @@ import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.board.model.service.BoardService;
 import com.ssafy.trip.util.PageNavigation;
 import lombok.extern.slf4j.Slf4j;
+
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.core.io.UrlResource;
+import org.springframework.core.io.Resource;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.ByteArrayInputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 @Slf4j
 @RestController
@@ -68,7 +89,63 @@ public class BoardController {
                 .body(Map.of("error", "게시글 조회 중 오류 발생"));
         }
     }
+    
+    @GetMapping("/loadfile/{boardId}")
+    public ResponseEntity<List<String>> getFileUrls(@PathVariable("boardId") int boardId) {
+        try {
 
+            String userName = System.getProperty("user.name");
+
+            // 파일 URL 리스트 가져오기
+            List<String> fileUrls = boardService.getfiles(boardId);
+            if (fileUrls == null || fileUrls.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body(Collections.emptyList());
+            }
+
+            // 실제 파일 경로로 변환 (C:/사용자명/enjoytrip/uploads/boardId/파일명)
+            String baseDirectory = "/Users/" + userName + "/enjoytrip/uploads/" + boardId + "/";
+            List<String> accessibleUrls = fileUrls.stream()
+                    .map(filePath -> baseDirectory + new File(filePath).getName())
+                    .collect(Collectors.toList());
+
+            System.out.println(accessibleUrls);
+            return ResponseEntity.ok(accessibleUrls);
+        } catch (Exception e) {
+            log.error("파일 URL 로드 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Collections.emptyList());
+        }
+    }
+    
+    @GetMapping("/file/{boardId}/{fileName}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String boardId, @PathVariable String fileName) {
+        try {
+            String userName = System.getProperty("user.name");
+            String baseDirectory = "/Users/" + userName + "/enjoytrip/uploads/" + boardId;
+
+            // 파일 경로 설정
+            File file = new File(baseDirectory, fileName);
+            if (!file.exists()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+
+            // 파일을 리소스로 변환
+            Resource resource = new UrlResource(file.toURI());
+
+            // 헤더 설정
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_TYPE, Files.probeContentType(file.toPath()))
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + file.getName() + "\"")
+                    .body(resource);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
     // 게시글 작성
     @PostMapping
     public ResponseEntity<?> write(@RequestBody BoardDto boardDto) {
@@ -91,7 +168,7 @@ public class BoardController {
         }
     }
     
- // 게시글 작성
+ //파일 업로드 
     @PostMapping("/fileUpload")
     public ResponseEntity<?> uploadFile(@RequestBody List<FileDto> fileDtos) {
         try {

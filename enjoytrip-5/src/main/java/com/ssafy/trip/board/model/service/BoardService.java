@@ -19,4 +19,5 @@ public interface BoardService {
 	void modifyArticle(BoardDto boardDto) throws Exception;
 	void deleteArticle(int articleNo) throws Exception;
 	void saveFilestoDatabase(List<FileDto> fileDtos) throws Exception;
+	List<String> getfiles(int articleno) throws Exception;
 }

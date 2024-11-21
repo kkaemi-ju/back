@@ -80,5 +80,8 @@
     <delete id="deleteArticle" parameterType="int">
         DELETE FROM board WHERE board_id = #{boardId}
     </delete>
+    
+    <select id="getFiles" parameterType="int" resultType="string">
+    select file_url from board_file where board_id = #{boardId}</select>
 
 </mapper>

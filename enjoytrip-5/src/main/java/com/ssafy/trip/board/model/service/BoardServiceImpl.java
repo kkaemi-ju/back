@@ -184,6 +184,13 @@ public class BoardServiceImpl implements BoardService {
         }
         boardMapper.uploadFile(fileDtos);
 	}
+	@Override
+	public List<String> getfiles(int articleno) throws Exception {
+		return boardMapper.getFiles(articleno);
+		
+	}
+	
+	
 
 }
 
