@@ -89,34 +89,7 @@ public class BoardController {
                 .body(Map.of("error", "게시글 조회 중 오류 발생"));
         }
     }
-    
-//    @GetMapping("/loadfile/{boardId}")
-//    public ResponseEntity<List<String>> getFileUrls(@PathVariable("boardId") int boardId) {
-//        try {
-//
-//            String userName = System.getProperty("user.name");
-//
-//            // 파일 URL 리스트 가져오기
-//            List<String> fileUrls = boardService.getfiles(boardId);
-//            if (fileUrls == null || fileUrls.isEmpty()) {
-//                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                        .body(Collections.emptyList());
-//            }
-//
-//            // 실제 파일 경로로 변환 (C:/사용자명/enjoytrip/uploads/boardId/파일명)
-//            String baseDirectory = "/Users/" + userName + "/enjoytrip/uploads/" + boardId + "/";
-//            List<String> accessibleUrls = fileUrls.stream()
-//                    .map(filePath -> baseDirectory + new File(filePath).getName())
-//                    .collect(Collectors.toList());
-//
-//            System.out.println(accessibleUrls);
-//            return ResponseEntity.ok(accessibleUrls);
-//        } catch (Exception e) {
-//            log.error("파일 URL 로드 중 오류 발생", e);
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                    .body(Collections.emptyList());
-//        }
-//    }
+
     
     @GetMapping("/loadfile/{boardId}")
     public ResponseEntity<List<String>> getFileUrls(@PathVariable("boardId") int boardId) {
