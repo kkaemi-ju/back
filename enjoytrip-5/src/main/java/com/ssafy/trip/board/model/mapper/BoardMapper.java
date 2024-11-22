@@ -1,6 +1,7 @@
 package com.ssafy.trip.board.model.mapper;
 
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.CommentDto;
 import com.ssafy.trip.board.model.FileDto;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -20,4 +21,7 @@ public interface BoardMapper {
     void uploadFile(List<FileDto> fileDtos);
     List<String> getFiles(int articleno);
     void deleteFile(int articleno);
+    List<CommentDto> getComments(int articleno);
+    void writeComment(CommentDto commentDto);
+    void deleteComment(int commentId);
 }

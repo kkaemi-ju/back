@@ -3,6 +3,7 @@ package com.ssafy.trip.board.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.CommentDto;
 import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.board.model.service.BoardService;
 import com.ssafy.trip.util.PageNavigation;
@@ -211,6 +212,55 @@ public class BoardController {
             log.error("Error deleting article", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(Map.of("error", "게시글 삭제 중 오류 발생"));
+        }
+    }
+    
+ //댓글 조회 
+    @GetMapping("/comment/{articleno}")
+    public ResponseEntity<?> getComments(@PathVariable("articleno") int articleNo) {
+        try {
+            // 댓글 목록 조회
+            List<CommentDto> comments = boardService.getComments(articleNo);
+            System.out.println(comments);
+            return ResponseEntity.ok(comments);
+        } catch (Exception e) {
+            log.error("Error fetching comments", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "댓글 조회 중 오류 발생"));
+        }
+    }
+    
+    // 댓글 작성 
+    @PostMapping("/comment")
+    public ResponseEntity<?> writeComment(@RequestBody CommentDto commentDto) {
+        try {
+            
+            System.out.println("게시글 데이터: " + commentDto);
+            if (commentDto.getUserId() == null || commentDto.getUserId().isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "로그인이 필요합니다."));
+            }
+
+            boardService.writeComment(commentDto);
+            return ResponseEntity.status(HttpStatus.CREATED)
+                    .body(Map.of("message", "댓글 작성 성공"));
+        } catch (Exception e) {
+            log.error("Error creating comment", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", "댓글 작성 중 오류 발생"));
+        }
+    }
+    
+ //댓글 삭제
+    @DeleteMapping("/comment/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable("commentId") int commentId) {
+        try {
+            boardService.deleteComment(commentId);
+            return ResponseEntity.ok(Map.of("message", "댓글 삭제 성공"));
+        } catch (Exception e) {
+            log.error("Error deleting comment", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "댓글 삭제 중 오류 발생"));
         }
     }
 }

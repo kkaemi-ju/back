@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.CommentDto;
 import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.util.PageNavigation;
 
@@ -20,4 +21,7 @@ public interface BoardService {
 	void deleteArticle(int articleNo) throws Exception;
 	void saveFilestoDatabase(List<FileDto> fileDtos) throws Exception;
 	List<String> getfiles(int articleno) throws Exception;
+	List<CommentDto> getComments(int articleno) throws Exception;
+	void writeComment(CommentDto commentDto) throws Exception;
+	void deleteComment(int commentId) throws Exception;
 }
