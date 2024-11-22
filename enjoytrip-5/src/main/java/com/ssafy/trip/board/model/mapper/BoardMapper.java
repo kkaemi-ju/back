@@ -19,4 +19,5 @@ public interface BoardMapper {
     void deleteArticle(int articleNo);
     void uploadFile(List<FileDto> fileDtos);
     List<String> getFiles(int articleno);
+    void deleteFile(int articleno);
 }

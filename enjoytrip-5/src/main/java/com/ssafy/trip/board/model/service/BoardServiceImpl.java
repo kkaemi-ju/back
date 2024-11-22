@@ -108,6 +108,8 @@ public class BoardServiceImpl implements BoardService {
 		System.out.println(boardDto.getBoardId());
 		System.out.println(boardDto.getContent());
 		boardMapper.modifyArticle(boardDto);
+		boardMapper.deleteFile(boardDto.getBoardId());	// 파일 모두 지우
+		
 	}
 
 	@Override
@@ -116,6 +118,7 @@ public class BoardServiceImpl implements BoardService {
 		// TODO : BoardDaoImpl의 deleteArticle 호출
 
 		boardMapper.deleteArticle(articleNo);
+		boardMapper.deleteFile(articleNo);
 
 	}
 	@Override
