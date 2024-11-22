@@ -136,6 +136,12 @@ public class BoardServiceImpl implements BoardService {
 	    String uploadDir = Paths.get(userHome, "enjoytrip", "uploads").toString();
 
 	    for (FileDto fileDto : fileDtos) {
+	        // 이미 저장된 파일인지 확인 ->변환 안하고 기존 URL 그대로 저장 
+	        if (fileDto.getFileUrl().startsWith("http://localhost/board/file")) {
+	            filePaths.add(fileDto.getFileUrl()); // 기존 URL 그대로 유지
+	            continue;
+	        }
+
 	        // 게시글 ID로 디렉토리 설정
 	        String boardIdDir = Paths.get(uploadDir, String.valueOf(fileDto.getBoardId())).toString();
 	        File boardDirectory = new File(boardIdDir);
@@ -176,21 +182,21 @@ public class BoardServiceImpl implements BoardService {
 
 	    return filePaths;
 	}
-	
+
 	@Override
 	public void saveFilestoDatabase(List<FileDto> fileDtos) throws Exception {
-		List<String> filePaths = saveFiles(fileDtos);
+	    List<String> filePaths = saveFiles(fileDtos);
 
-        // 데이터베이스에 저장
-        for (int i = 0; i < fileDtos.size(); i++) {
-            fileDtos.get(i).setFileUrl(filePaths.get(i));
-        }
-        boardMapper.uploadFile(fileDtos);
+	    // 데이터베이스에 저장
+	    for (int i = 0; i < fileDtos.size(); i++) {
+	        fileDtos.get(i).setFileUrl(filePaths.get(i));
+	    }
+	    boardMapper.uploadFile(fileDtos);
 	}
+
 	@Override
 	public List<String> getfiles(int articleno) throws Exception {
-		return boardMapper.getFiles(articleno);
-		
+	    return boardMapper.getFiles(articleno);
 	}
 	
 	
