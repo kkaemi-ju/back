@@ -83,6 +83,7 @@ public class BoardController {
         try {
             boardService.updateHit(articleNo);
             BoardDto boardDto = boardService.getArticle(articleNo);
+            System.out.println(boardDto);
             return ResponseEntity.ok(boardDto);
         } catch (Exception e) {
             log.error("Error fetching article", e);
@@ -152,6 +153,7 @@ public class BoardController {
     @PostMapping
     public ResponseEntity<?> write(@RequestBody BoardDto boardDto) {
         try {
+        System.out.println("!1!!!");
             
             System.out.println("게시글 데이터: " + boardDto);
             if (boardDto.getUserId() == null || boardDto.getUserId().isEmpty()) {

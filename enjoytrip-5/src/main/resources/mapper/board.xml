@@ -24,8 +24,8 @@
 		<result column="created_at" property="createdAt"/>
 	</resultMap>
     <insert id="writeArticle" parameterType="boardDto" useGeneratedKeys = "true" keyProperty="boardId">
-        INSERT INTO board (board_type_id, user_id, title, content, created_at)
-        VALUES (#{boardId},#{userId}, #{title}, #{content}, NOW())
+        INSERT INTO board (board_type_id, user_id, title, content,attraction_url, attraction_name, created_at)
+        VALUES (#{boardId},#{userId}, #{title}, #{content},  #{attractionUrl}, #{attractionName}, NOW())
     </insert>
     <insert id="uploadFile" parameterType="list">
     INSERT INTO board_file (board_id, file_url)
@@ -70,7 +70,7 @@
     </select>
 
     <select id="getArticle" parameterType="int" resultMap="article">
-        SELECT board_id, user_id, title, content, view, created_at
+        SELECT board_id, user_id, title, content, view, attraction_url, attraction_name, created_at
         FROM board
         WHERE board_id = #{boardId}
     </select>
