@@ -10,7 +10,7 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @ToString
-@Schema(title = "FileDto (파일 정보)", description = "파일 정 ")
+@Schema(title = "FileDto (파일 정보)", description = "파일 정보 ")
 
 public class FileDto {
 	@Schema(description = "파일아이디 ")

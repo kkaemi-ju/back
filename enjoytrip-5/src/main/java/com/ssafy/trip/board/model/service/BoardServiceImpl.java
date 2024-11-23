@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.trip.board.model.BoardDto;
+import com.ssafy.trip.board.model.CommentDto;
 import com.ssafy.trip.board.model.FileDto;
 import com.ssafy.trip.board.model.mapper.BoardMapper;
 import com.ssafy.trip.util.BoardSize;
@@ -197,6 +198,21 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public List<String> getfiles(int articleno) throws Exception {
 	    return boardMapper.getFiles(articleno);
+	}
+	@Override
+	public List<CommentDto> getComments(int articleno) throws Exception {
+		
+		return boardMapper.getComments(articleno);
+	}
+	@Override
+	public void writeComment(CommentDto commentDto) throws Exception {
+		boardMapper.writeComment(commentDto);
+		
+	}
+	@Override
+	public void deleteComment(int commentId) throws Exception {
+		boardMapper.deleteComment(commentId);
+		
 	}
 	
 	
