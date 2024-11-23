@@ -10,7 +10,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class AttractionRequest {
-	private Integer attractionNo;
-    private Integer visitOrder;
+	private int attractionsNo;
+    private int visitOrder;
     private String memo;
 }

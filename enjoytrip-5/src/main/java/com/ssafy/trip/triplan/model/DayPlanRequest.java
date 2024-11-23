@@ -11,7 +11,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class DayPlanRequest {
-	private Integer dayNumber;
+	private int dayNumber;
     private String date;
     private List<AttractionRequest> attractions;
 

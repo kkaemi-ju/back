@@ -3,5 +3,96 @@
 
 <mapper namespace="com.ssafy.trip.tripplan.model.mapper.TripPlanMapper">
 
+	<select id="getTripPlansByUserId" parameterType="String" resultType="tripPlanDto">
+        SELECT
+            trip_plan_id AS tripPlanId,
+            trip_name AS tripName,
+            start_date AS startDate,
+            end_date AS endDate,
+            created_at AS createdAt,
+            updated_at AS updatedAt,
+            user_id AS userId
+        FROM
+            trip_plan
+        WHERE
+            user_id = #{userId} <!-- userId 조건 추가 -->
+        ORDER BY
+            created_at ASC; <!-- 생성 날짜 순서로 정렬 -->
+    </select>
+<!-- Trip Plan INSERT -->
+    <insert id="insertTripPlan" useGeneratedKeys="true" keyProperty="tripPlanId">
+        INSERT INTO trip_plan (trip_name, start_date, end_date, created_at, updated_at, user_id)
+        VALUES (#{tripName}, #{startDate}, #{endDate}, NOW(), NOW(), #{userId});
+    </insert>
 
+    <!-- Day Plan INSERT -->
+    <insert id="insertDayPlan" useGeneratedKeys="true" keyProperty="dayPlanId">
+        INSERT INTO day_plan (day_number, date, trip_plan_id)
+        VALUES (#{dayNumber}, #{date}, #{tripPlanId});
+    </insert>
+
+    <!-- Day Plan Attractions INSERT -->
+    <insert id="insertDayPlanAttraction">
+        INSERT INTO day_plan_attractions (plan_day_id, attractions_no, visit_order, memo)
+        VALUES (#{planDayId}, #{attractionsNo}, #{visitOrder}, #{memo});
+    </insert>
+
+    <!-- Retrieve Last Inserted ID -->
+    <select id="getLastInsertedId" resultType="integer">
+        SELECT LAST_INSERT_ID();
+    </select>
+    
+    <select id="getTripPlanById" resultType="tripPlanDto">
+        SELECT trip_plan_id AS tripPlanId,
+           trip_name AS tripName,
+           start_date AS startDate,
+           end_date AS endDate,
+           created_at AS createdAt,
+           updated_at AS updatedAt,
+           user_id AS userId
+    FROM trip_plan
+    WHERE trip_plan_id = #{tripPlanId}
+    </select>
+
+    <select id="getDayPlansByTripPlanId" resultType="dayPlanDto">
+        SELECT day_plan_id AS dayPlanId,
+           trip_plan_id AS tripPlanId,
+           day_number AS dayNumber,
+           date AS date
+    FROM day_plan
+    WHERE trip_plan_id = #{tripPlanId}
+    </select>
+
+    <select id="getAttractionsByTripPlanId" resultType="dayPlanAttractionsDto">
+        SELECT plan_day_id AS planDayId,
+           attractions_no AS attractionsNo,
+           visit_order AS visitOrder,
+           memo AS memo
+    FROM day_plan_attractions
+    WHERE plan_day_id IN (SELECT day_plan_id FROM day_plan WHERE trip_plan_id = #{tripPlanId})
+    </select>
+
+    <select id="getAttractionDetails" resultType="com.ssafy.trip.search.model.TripDto">
+        SELECT 
+        no AS no, 
+        content_id AS contentId, 
+        title AS title, 
+        content_type_id AS contentTypeId, 
+        area_code AS areaCode, 
+        si_gun_gu_code AS siGunGuCode, 
+        first_image1 AS firstImage1, 
+        first_image2 AS firstImage2, 
+        map_level AS mapLevel, 
+        latitude AS latitude, 
+        longitude AS longitude, 
+        tel AS tel, 
+        addr1 AS addr1, 
+        addr2 AS addr2, 
+        homepage AS homepage, 
+        overview AS overview
+    FROM 
+        attractions 
+    WHERE 
+        no = #{attractionsNo}
+    </select>
 </mapper>

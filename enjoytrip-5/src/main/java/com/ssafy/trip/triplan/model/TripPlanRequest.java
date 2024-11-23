@@ -15,5 +15,5 @@ public class TripPlanRequest {
     private String startDate;
     private String endDate;
     private String userId;
-//    private List<DayPlanRequest> days;
+    private List<DayPlanRequest> days;
 }
