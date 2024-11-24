@@ -106,7 +106,7 @@ public class MypageController {
 
     
     
-    @PostMapping("/delete")
+    @DeleteMapping
     public ResponseEntity<Map<String, String>> delete(@RequestBody MemberDto memberDto) {
         try {
             memberService.deleRefreshToken(memberDto.getUserId());

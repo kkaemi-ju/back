@@ -12,4 +12,8 @@ public interface TripPlanService {
 	List<TripPlanDto> getTripPlansByUserId(String userId) throws Exception;
 
 	Map<String, Object> getTripPlanDetails(int tripPlanId) throws Exception;
+
+	void deleteTripPlan(int tripPlanId) throws Exception;
+
+	void updateTripPlan(int tripPlanId, TripPlanRequest tripPlanRequest) throws Exception;
 }

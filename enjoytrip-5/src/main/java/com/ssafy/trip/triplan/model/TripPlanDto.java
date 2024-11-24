@@ -17,4 +17,5 @@ public class TripPlanDto {
     private String createdAt;
     private String updatedAt;
     private String userId;
+    private int sidoCode;
 }

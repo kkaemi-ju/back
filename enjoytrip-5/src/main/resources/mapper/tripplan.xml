@@ -11,7 +11,8 @@
             end_date AS endDate,
             created_at AS createdAt,
             updated_at AS updatedAt,
-            user_id AS userId
+            user_id AS userId,
+            sido_code AS sidoCode
         FROM
             trip_plan
         WHERE
@@ -21,8 +22,8 @@
     </select>
 <!-- Trip Plan INSERT -->
     <insert id="insertTripPlan" useGeneratedKeys="true" keyProperty="tripPlanId">
-        INSERT INTO trip_plan (trip_name, start_date, end_date, created_at, updated_at, user_id)
-        VALUES (#{tripName}, #{startDate}, #{endDate}, NOW(), NOW(), #{userId});
+        INSERT INTO trip_plan (trip_name, start_date, end_date, created_at, updated_at, user_id, sido_code)
+        VALUES (#{tripName}, #{startDate}, #{endDate}, NOW(), NOW(), #{userId}, #{sidoCode});
     </insert>
 
     <!-- Day Plan INSERT -->
@@ -49,7 +50,8 @@
            end_date AS endDate,
            created_at AS createdAt,
            updated_at AS updatedAt,
-           user_id AS userId
+           user_id AS userId,
+           sido_code AS sidoCode
     FROM trip_plan
     WHERE trip_plan_id = #{tripPlanId}
     </select>
@@ -95,4 +97,26 @@
     WHERE 
         no = #{attractionsNo}
     </select>
+    
+    <!-- Update trip plan -->
+    <update id="updateTripPlan">
+        UPDATE trip_plan
+        SET 
+            trip_name = #{tripName},
+            start_date = #{startDate},
+            end_date = #{endDate},
+            updated_at = NOW(),
+            sido_code = #{sidoCode}
+        WHERE trip_plan_id = #{tripPlanId};
+    </update>
+    
+    <delete id="deleteTripPlan">
+    delete from trip_plan
+    where trip_plan_id = ${tripPlanId}
+    </delete>
+    
+    <!-- Delete all day plans associated with a trip plan -->
+    <delete id="deleteDayPlansByTripPlanId">
+        DELETE FROM day_plan WHERE trip_plan_id = #{tripPlanId};
+    </delete>
 </mapper>

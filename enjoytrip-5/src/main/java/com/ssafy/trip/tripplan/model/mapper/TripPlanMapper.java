@@ -18,13 +18,16 @@ public interface TripPlanMapper {
 	void insertDayPlan(DayPlanDto dayPlan) throws SQLException;
 
 	void insertDayPlanAttraction(DayPlanAttractionsDto dayPlanAttractions) throws SQLException;
-	Integer getLastInsertedId();// Auto-increment된 ID를 반환
-	TripPlanDto getTripPlanById(int tripPlanId);
+	Integer getLastInsertedId() throws SQLException;// Auto-increment된 ID를 반환
+	TripPlanDto getTripPlanById(int tripPlanId) throws SQLException;
 
-    List<DayPlanDto> getDayPlansByTripPlanId(int tripPlanId);
+    List<DayPlanDto> getDayPlansByTripPlanId(int tripPlanId) throws SQLException;
 
-    List<DayPlanAttractionsDto> getAttractionsByTripPlanId(int tripPlanId);
+    List<DayPlanAttractionsDto> getAttractionsByTripPlanId(int tripPlanId) throws SQLException;
 
-    TripDto getAttractionDetails(int attractionsNo);
+    TripDto getAttractionDetails(int attractionsNo) throws SQLException;
+	void deleteTripPlan(int tripPlanId) throws SQLException;
+	void updateTripPlan(TripPlanDto tripPlan) throws SQLException;
+	void deleteDayPlansByTripPlanId(int tripPlanId) throws SQLException;
 	
 }

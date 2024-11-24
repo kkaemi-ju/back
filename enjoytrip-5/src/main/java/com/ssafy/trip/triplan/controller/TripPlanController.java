@@ -3,10 +3,13 @@ package com.ssafy.trip.triplan.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -68,6 +71,34 @@ public class TripPlanController {
 			e.printStackTrace();
 		}
         return ResponseEntity.ok(planDetails);
+    }
+    @PutMapping("/{tripPlanId}")
+    public ResponseEntity<?> updateTripPlan(
+            @PathVariable int tripPlanId, 
+            @RequestBody TripPlanRequest tripPlanRequest) {
+        try {
+            tripPlanService.updateTripPlan(tripPlanId, tripPlanRequest);
+            return ResponseEntity.ok("Trip plan updated successfully!");
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Failed to update trip plan");
+        }
+    }
+    @DeleteMapping("/{tripPlanId}")
+    public ResponseEntity<Map<String, Object>> deleteTripPlan(
+    		@PathVariable("tripPlanId") int tripPlanId) {
+ 
+		try {
+			tripPlanService.deleteTripPlan(tripPlanId);
+			return ResponseEntity
+                    .status(HttpStatus.OK) // HTTP 상태 코드 설정
+                    .body(Map.of("message", "계정이 성공적으로 삭제되었습니다."));
+        } catch (Exception e) {
+            log.error("Error deleting user", e);
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR) // 에러 상태 코드
+                    .body(Map.of("error", "계정을 삭제하는 중 문제가 발생했습니다."));
+        }
     }
     
 }
