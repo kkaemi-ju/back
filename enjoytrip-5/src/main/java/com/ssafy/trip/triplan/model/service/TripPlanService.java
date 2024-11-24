@@ -16,4 +16,5 @@ public interface TripPlanService {
 	void deleteTripPlan(int tripPlanId) throws Exception;
 
 	void updateTripPlan(int tripPlanId, TripPlanRequest tripPlanRequest) throws Exception;
+	List<Map<String, Object>> getTopVisitedSidoCodes() throws Exception;
 }

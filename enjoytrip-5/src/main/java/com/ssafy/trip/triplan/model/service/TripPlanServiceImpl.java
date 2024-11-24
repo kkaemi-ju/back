@@ -144,5 +144,9 @@ public class TripPlanServiceImpl implements TripPlanService {
         }
         
 	}
+	@Override
+	public List<Map<String, Object>> getTopVisitedSidoCodes() throws Exception {
+		return tripPlanMapper.getTopVisitedSidoCodes();
+	}
 
 }

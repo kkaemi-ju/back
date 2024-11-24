@@ -119,4 +119,18 @@
     <delete id="deleteDayPlansByTripPlanId">
         DELETE FROM day_plan WHERE trip_plan_id = #{tripPlanId};
     </delete>
+    
+    <select id="getTopVisitedSidoCodes" resultType="map">
+	    SELECT 
+	        sido_code,
+	        COUNT(*) AS visit_count
+	    FROM 
+	        trip_plan
+	    GROUP BY 
+	        sido_code
+	    ORDER BY 
+	        visit_count DESC
+	    LIMIT 3
+	</select>
+    
 </mapper>

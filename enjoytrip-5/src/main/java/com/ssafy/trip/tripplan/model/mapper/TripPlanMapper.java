@@ -2,6 +2,7 @@ package com.ssafy.trip.tripplan.model.mapper;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -29,5 +30,6 @@ public interface TripPlanMapper {
 	void deleteTripPlan(int tripPlanId) throws SQLException;
 	void updateTripPlan(TripPlanDto tripPlan) throws SQLException;
 	void deleteDayPlansByTripPlanId(int tripPlanId) throws SQLException;
+	List<Map<String, Object>> getTopVisitedSidoCodes() throws SQLException;
 	
 }

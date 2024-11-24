@@ -1,5 +1,6 @@
 package com.ssafy.trip.triplan.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -101,4 +102,16 @@ public class TripPlanController {
         }
     }
     
+    
+    @GetMapping("/top-sido")
+    public ResponseEntity<List<Map<String, Object>>> getTopVisitedSidoCodes() {
+        try {
+            List<Map<String, Object>> topSidoCodes = tripPlanService.getTopVisitedSidoCodes();
+            return ResponseEntity.ok(topSidoCodes); // 정상적으로 데이터를 반환
+        } catch (Exception e) {
+            // 에러 발생 시 로그 출력 및 빈 리스트 반환
+            e.printStackTrace();
+            return ResponseEntity.ok(new ArrayList<>()); // 빈 리스트 반환
+        }
+    }
 }
