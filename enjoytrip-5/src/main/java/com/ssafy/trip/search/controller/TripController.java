@@ -1,5 +1,6 @@
 package com.ssafy.trip.search.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -82,6 +83,39 @@ public class TripController {
             List<TripDto> result = tripService.siDoTitleSearch(sido, title);
             return ResponseEntity.ok(result);
         } catch (Exception e) {
+            log.error("오류 발생", e);
+            return ResponseEntity.status(500).build();
+        }
+    }
+    
+    // 랭킹 여행지 
+    @GetMapping("/top")
+    public ResponseEntity<List<TripDto>> getAttractions(){
+ 	   try {
+ 		   List<TripDto> result = tripService.getTopAttractions();
+ 		   System.out.println("result" + result);
+ 		   return ResponseEntity.ok(result);
+ 	   }catch(Exception e) {
+ 		   e.printStackTrace();
+ 		   log.error("오류 발생", e);
+            return ResponseEntity.status(500).build();
+ 	   }
+ 	   
+    }
+    
+//    @PostMapping("/info") // POST로 변경 (리스트를 전달받을 때 적합)
+    public ResponseEntity<List<TripDto>> getInfos(@RequestBody List<Integer> noList) {
+        try {
+            // noList를 서비스 계층에 전달
+            Map<String, Object> params = new HashMap<>();
+            params.put("noList", noList);
+
+            List<TripDto> result = tripService.getInfos(params);
+            System.out.println("Result: " + result);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
             log.error("오류 발생", e);
             return ResponseEntity.status(500).build();
         }

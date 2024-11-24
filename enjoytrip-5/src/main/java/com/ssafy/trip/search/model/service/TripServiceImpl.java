@@ -1,6 +1,7 @@
 package com.ssafy.trip.search.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,17 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public List<TripDto> siDoTitleSearch(int sido, String title) throws Exception {
 		return tripMapper.siDoTitleSearch(sido, title);
+	}
+
+	@Override
+	public List<TripDto> getTopAttractions() throws Exception {
+		
+		return tripMapper.getTopAttractions();
+	}
+
+	@Override
+	public List<TripDto> getInfos(Map<String, Object> params) throws Exception {
+		return tripMapper.getInfos(params);
 	}
 
 }

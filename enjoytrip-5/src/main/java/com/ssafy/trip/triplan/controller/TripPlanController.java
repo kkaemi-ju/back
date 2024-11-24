@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.trip.search.controller.TripController;
+import com.ssafy.trip.search.model.TripDto;
 import com.ssafy.trip.triplan.model.DayPlanRequest;
 import com.ssafy.trip.triplan.model.TripPlanDto;
 import com.ssafy.trip.triplan.model.TripPlanRequest;
@@ -101,7 +102,6 @@ public class TripPlanController {
                     .body(Map.of("error", "계정을 삭제하는 중 문제가 발생했습니다."));
         }
     }
-    
     
     @GetMapping("/top-sido")
     public ResponseEntity<List<Map<String, Object>>> getTopVisitedSidoCodes() {

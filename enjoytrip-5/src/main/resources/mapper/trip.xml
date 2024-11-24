@@ -61,4 +61,16 @@
 		LIKE CONCAT('%', #{title}, '%') limit 50
 	</select>
 
+<select id="getTopAttractions" resultType="map">
+
+select attractions_no, count(attractions_no) cnt from day_plan_attractions group by attractions_no order by cnt desc;
+</select>
+
+<select id="getInfos" parameterType="map" resultType="TripDto">
+    select * from attractions 
+    where no in 
+    <foreach item="id" collection="noList" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+</select>
 </mapper>
