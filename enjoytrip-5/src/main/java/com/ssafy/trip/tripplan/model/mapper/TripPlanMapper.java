@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.ssafy.trip.search.model.TripDto;
 import com.ssafy.trip.triplan.model.DayPlanAttractionsDto;
@@ -31,5 +32,6 @@ public interface TripPlanMapper {
 	void updateTripPlan(TripPlanDto tripPlan) throws SQLException;
 	void deleteDayPlansByTripPlanId(int tripPlanId) throws SQLException;
 	List<Map<String, Object>> getTopVisitedSidoCodes() throws SQLException;
+	List<Map<String, Object>> getTopAttractionsBySidoCode(int sidoCode) throws SQLException;
 	
 }

@@ -132,5 +132,36 @@
 	        visit_count DESC
 	    LIMIT 3
 	</select>
-    
+    <select id="getTopAttractionsBySidoCode" resultType="map">
+        SELECT 
+	    a.no,
+	    a.first_image1,
+	    a.title,
+	    a.latitude,
+	    a.longitude,
+	    a.addr1,
+	    a.addr2,
+	    top_attractions.visit_count
+	FROM 
+	    attractions a
+	JOIN (
+	    SELECT 
+	        dpa.attractions_no AS attractions_no, 
+	        COUNT(*) AS visit_count
+	    FROM 
+	        day_plan_attractions dpa
+	    JOIN 
+	        day_plan dp ON dpa.plan_day_id = dp.day_plan_id
+	    JOIN 
+	        trip_plan tp ON dp.trip_plan_id = tp.trip_plan_id
+	    WHERE 
+	        tp.sido_code = #{sidoCode} 
+	    GROUP BY 
+	        dpa.attractions_no
+	    ORDER BY 
+	        visit_count DESC
+	    LIMIT 5
+	) top_attractions ON a.no = top_attractions.attractions_no;
+
+    </select>
 </mapper>

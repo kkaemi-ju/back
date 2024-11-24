@@ -17,4 +17,5 @@ public interface TripPlanService {
 
 	void updateTripPlan(int tripPlanId, TripPlanRequest tripPlanRequest) throws Exception;
 	List<Map<String, Object>> getTopVisitedSidoCodes() throws Exception;
+	List<Map<String, Object>> getTopAttractionsBySidoCode(int sidoCode) throws Exception;
 }
