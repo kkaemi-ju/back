@@ -1,6 +1,8 @@
 package com.ssafy.trip.search.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
@@ -38,20 +40,32 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
+
 	public void createFavorite(FavoritDto favoritDto) throws Exception {
 		tripMapper.createFavorite(favoritDto);
-		
+
 	}
-	
+
 	@Override
 	public void deleteFavorite(FavoritDto favoritDto) throws Exception {
 		tripMapper.deleteFavorite(favoritDto);
-		
+
 	}
 
 	@Override
 	public List<FavoritDto> getFavorite(String userId) throws Exception {
 		return tripMapper.getFavorite(userId);
 	}
+
+	public List<TripDto> getTopAttractions() throws Exception {
+
+		return tripMapper.getTopAttractions();
+	}
+
+	@Override
+	public List<TripDto> getInfos(List<Integer> noList) throws Exception {
+		return tripMapper.getInfos(noList);
+	}
+
 
 }

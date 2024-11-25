@@ -1,4 +1,4 @@
-<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ssafy.trip.search.model.mapper.TripMapper">
@@ -27,7 +27,7 @@
 		<result column="attractions_no" property="attractionsNo" />
 		<result column="user_id" property="userId" />
 		<result column="created_at" property="createdAt" />
-	
+
 	</resultMap>
 	<!-- 지역만 검색 -->
 	<select id="siDoSearch" parameterType="int"
@@ -67,15 +67,31 @@
 		AND title
 		LIKE CONCAT('%', #{title}, '%') limit 50
 	</select>
+
 	<insert id="createFavorite" parameterType="map">
 		insert into favorite (attractions_no, user_id, created_at) values (#{attractionsNo},#{userId}, NOW());
 	</insert>
-	
+
 	<insert id="deleteFavorite" parameterType="map">
 		delete from favorite where user_id = #{userId} and attractions_no = #{attractionsNo};
 	</insert>
-	
+
 	<select id="getFavorite" resultMap="FavoritDtoMap">
 		select favorite_id, attractions_no, created_at from favorite where user_id = #{userId};
 	</select>
+
+
+<select id="getTopAttractions" resultType="map">
+
+select attractions_no, count(attractions_no) cnt from day_plan_attractions group by attractions_no order by cnt desc;
+</select>
+
+<select id="getInfos" parameterType="map" resultMap="TripDtoMap">
+    select no, content_id, title, content_type_id, area_code, si_gun_gu_code, first_image1, first_image2, map_level, latitude, longitude, tel, addr1, addr2, homepage, overview from attractions
+    where no in
+    <foreach item="id" collection="noList" open="(" separator="," close=")">
+        #{id}
+    </foreach>
+</select>
+
 </mapper>

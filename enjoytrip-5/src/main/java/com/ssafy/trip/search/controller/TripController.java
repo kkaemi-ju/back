@@ -1,5 +1,6 @@
 package com.ssafy.trip.search.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +30,7 @@ public class TripController {
         return ResponseEntity.ok("trip 준비완료!");
     }
 
-    // 도시 
+    // 도시
     @PostMapping("/sidosearch")
     public ResponseEntity<List<TripDto>> siDoSearch(@RequestBody Map<String, Object> params) {
     	System.out.println("도시 검색!!!!!");
@@ -43,7 +44,7 @@ public class TripController {
             return ResponseEntity.status(500).build();
         }
     }
-    // 도시, 타입 
+    // 도시, 타입
     @PostMapping("/sidotypesearch")
     public ResponseEntity<List<TripDto>> siDoTypeSearch(@RequestBody Map<String, Object> params) {
         Integer sido = (Integer) params.get("areaCode");
@@ -58,7 +59,7 @@ public class TripController {
         }
     }
 
-    // 도시, 타입, 검색어 
+    // 도시, 타입, 검색어
     @PostMapping("/sidotypetitlesearch")
     public ResponseEntity<List<TripDto>> siDoTypeTitleSearch(@RequestBody Map<String, Object> params) {
         Integer sido = (Integer) params.get("areaCode");
@@ -73,7 +74,7 @@ public class TripController {
             return ResponseEntity.status(500).build();
         }
     }
-    // 도시, 검색어 
+    // 도시, 검색어
     @PostMapping("/sidotitlesearch")
     public ResponseEntity<List<TripDto>> siDoTitleSearch(@RequestBody Map<String, Object> params) {
         Integer sido = (Integer) params.get("areaCode");
@@ -87,12 +88,13 @@ public class TripController {
             return ResponseEntity.status(500).build();
         }
     }
+
     @GetMapping("/favorite/{userid}")
     public ResponseEntity<List<FavoritDto>> getFavorite(@PathVariable("userid") String userId){
     	List<FavoritDto> favorites = null;
     	try {
     		favorites = tripService.getFavorite(userId);
-    		
+
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
@@ -109,10 +111,10 @@ public class TripController {
     		return ResponseEntity.status(500).body("Failed to insert favorite");
     	}
     }
- 
+
     @DeleteMapping("/favorite")
     public ResponseEntity<?> deleteFavorite(
-    		@RequestParam int attractionsNo, 
+    		@RequestParam int attractionsNo,
     		@RequestParam String userId){
     	try {
     		FavoritDto favoritDto = new FavoritDto();
@@ -124,5 +126,35 @@ public class TripController {
     		e.printStackTrace();
     		return ResponseEntity.status(500).body("Failed to insert favorite");
     	}
+
+    // 랭킹 여행지
+    @GetMapping("/top")
+    public ResponseEntity<List<TripDto>> getAttractions(){
+ 	   try {
+ 		   List<TripDto> result = tripService.getTopAttractions();
+ 		   System.out.println("result" + result);
+ 		   return ResponseEntity.ok(result);
+ 	   }catch(Exception e) {
+ 		   e.printStackTrace();
+ 		   log.error("오류 발생", e);
+            return ResponseEntity.status(500).build();
+ 	   }
+
+    }
+
+    @PostMapping("/info") // POST로 변경 (리스트를 전달받을 때 적합)
+    public ResponseEntity<List<TripDto>> getInfos(@RequestBody List<Integer> noList) {
+        try {
+
+            List<TripDto> result = tripService.getInfos(noList);
+            System.out.println("Result: " + result);
+
+            return ResponseEntity.ok(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("오류 발생", e);
+            return ResponseEntity.status(500).build();
+        }
+
     }
 }
