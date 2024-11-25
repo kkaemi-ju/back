@@ -70,43 +70,52 @@ public class MemberController {
                     .body(Map.of("error", "회원가입 중 문제 발생"));
         }
     }
-    @Operation(summary="로그인 ", description="id, 비밀번호 입력 ")
-    @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(
-            @RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
-        log.debug("login user : {}", memberDto);
-        Map<String, Object> resultMap = new HashMap<String, Object>();
-        HttpStatus status = HttpStatus.ACCEPTED;
-        try {
-            MemberDto loginUser = memberService.loginMember(memberDto);
-            if(loginUser != null) {
-                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
-                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
-                log.debug("access token : {}", accessToken);
-                log.debug("refresh token : {}", refreshToken);
-                
-//                발급받은 refresh token 을 DB에 저장.
-                memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
-                
-//                JSON 으로 token 전달.
-                resultMap.put("access-token", accessToken);
-                resultMap.put("refresh-token", refreshToken);
-//                
-                status = HttpStatus.CREATED;
-            } else {
-                resultMap.put("message", "아이디 또는 패스워드를 확인해 주세요.");
-                status = HttpStatus.UNAUTHORIZED;
-            } 
-            
-        } catch (Exception e) {
-            log.debug("로그인 에러 발생 : {}", e);
-            resultMap.put("message", e.getMessage());
-            status = HttpStatus.INTERNAL_SERVER_ERROR;
-        }
-        return new ResponseEntity<Map<String, Object>>(resultMap, status);
-    }
-
-
+	@Operation(summary = "로그인", description = "id, 비밀번호 입력")
+	@PostMapping("/login")
+	public ResponseEntity<Map<String, Object>> login(
+	        @RequestBody @Parameter(description = "로그인 시 필요한 회원정보(아이디, 비밀번호).", required = true) MemberDto memberDto) {
+	    log.debug("login user : {}", memberDto);
+	
+	    Map<String, Object> resultMap = new HashMap<>();
+	    HttpStatus status = HttpStatus.ACCEPTED;
+	
+	    try {
+	        MemberDto loginUser = memberService.loginMember(memberDto);
+	
+	        if (loginUser != null) {
+	            if (loginUser.getIsWithdraw() == 0) {
+	                // 정상 사용자 처리
+	                String accessToken = jwtUtil.createAccessToken(loginUser.getUserId());
+	                String refreshToken = jwtUtil.createRefreshToken(loginUser.getUserId());
+	                log.debug("access token : {}", accessToken);
+	                log.debug("refresh token : {}", refreshToken);
+	
+	                // Refresh token 저장
+	                memberService.saveRefreshToken(loginUser.getUserId(), refreshToken);
+	
+	                // JSON으로 token 전달
+	                resultMap.put("access-token", accessToken);
+	                resultMap.put("refresh-token", refreshToken);
+	                status = HttpStatus.CREATED;
+	
+	            } else {
+	                // 탈퇴한 사용자 처리
+	                resultMap.put("message", "탈퇴한 계정입니다. 로그인할 수 없습니다.");
+	                status = HttpStatus.FORBIDDEN; // HTTP 403: 권한 없음
+	            }
+	        } else {
+	            // 사용자 정보가 잘못된 경우
+	            resultMap.put("message", "아이디 또는 패스워드를 확인해 주세요.");
+	            status = HttpStatus.UNAUTHORIZED; // HTTP 401: 인증 실패
+	        }
+	    } catch (Exception e) {
+	        log.error("로그인 에러 발생 : {}", e.getMessage());
+	        resultMap.put("message", "로그인 중 오류가 발생했습니다.");
+	        status = HttpStatus.INTERNAL_SERVER_ERROR; // HTTP 500: 서버 에러
+	    }
+	
+	    return new ResponseEntity<>(resultMap, status);
+	}
 
     @Operation(summary = "회원인증", description = "회원 정보를 담은 Token 을 반환한다.")
 	@GetMapping("/info/{userId}")

@@ -98,15 +98,25 @@
     <select id="getFiles" parameterType="int" resultType="string">
     select file_url from board_file where board_id = #{boardId}</select>
 
-<select id = "getComments" parameterType="int" resultMap="comment">
-	select board_comment_id, user_id, content, board_id, created_at from board_comment where board_id = #{boardId}
-</select>
-
-<insert id="writeComment" parameterType="commentDto">
-insert into board_comment(user_id, content, board_id, created_at) values (#{userId},#{content}, #{boardId}, NOW())
-</insert>
-
-<delete id="deleteComment" parameterType = "int">
-delete from board_comment where board_comment_id = #{commentId}
-</delete>
+	<select id = "getComments" parameterType="int" resultMap="comment">
+		select board_comment_id, user_id, content, board_id, created_at from board_comment where board_id = #{boardId}
+	</select>
+	
+	<insert id="writeComment" parameterType="commentDto">
+	insert into board_comment(user_id, content, board_id, created_at) values (#{userId},#{content}, #{boardId}, NOW())
+	</insert>
+	
+	<delete id="deleteComment" parameterType = "int">
+	delete from board_comment where board_comment_id = #{commentId}
+	</delete>
+	<update id="updateComment" parameterType="commentDto">
+	    UPDATE board_comment
+	    SET
+	        content = #{content},
+	        created_at = NOW()
+	    WHERE
+	        board_comment_id = #{commentId}
+	        AND user_id = #{userId}
+	        AND board_id = #{boardId}
+	</update>
 </mapper>

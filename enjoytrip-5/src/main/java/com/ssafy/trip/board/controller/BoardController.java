@@ -265,4 +265,27 @@ public class BoardController {
                 .body(Map.of("error", "댓글 삭제 중 오류 발생"));
         }
     }
+    
+    //댓글 수정 
+    @PutMapping("/comment/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") int commentId) {
+        try {
+            boardService.deleteComment(commentId);
+            return ResponseEntity.ok(Map.of("message", "댓글 삭제 성공"));
+        } catch (Exception e) {
+            log.error("Error deleting comment", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "댓글 삭제 중 오류 발생"));
+        }
+    }    
+    
+    @PutMapping("/comment")
+    public ResponseEntity<?> updateComment(@RequestBody CommentDto commentDto) {
+        try {
+        	boardService.updateComment(commentDto);
+            return new ResponseEntity<>("댓글이 성공적으로 수정되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("댓글 수정 중 오류 발생: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

@@ -106,11 +106,11 @@ public class MypageController {
 
     
     
-    @DeleteMapping
-    public ResponseEntity<Map<String, String>> delete(@RequestBody MemberDto memberDto) {
+    @DeleteMapping("/{userid}")
+    public ResponseEntity<Map<String, String>> delete(@PathVariable("userid") String userId) {
         try {
-            memberService.deleRefreshToken(memberDto.getUserId());
-            mypageService.deleteUser(memberDto.getUserId());
+            memberService.deleRefreshToken(userId);
+            mypageService.deleteUser(userId);
             return ResponseEntity
                     .status(HttpStatus.OK) // HTTP 상태 코드 설정
                     .body(Map.of("message", "계정이 성공적으로 삭제되었습니다."));

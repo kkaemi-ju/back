@@ -24,4 +24,5 @@ public interface BoardMapper {
     List<CommentDto> getComments(int articleno);
     void writeComment(CommentDto commentDto);
     void deleteComment(int commentId);
+	void updateComment(CommentDto commentDto);
 }

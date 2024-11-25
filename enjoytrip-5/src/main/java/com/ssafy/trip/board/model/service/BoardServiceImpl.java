@@ -214,6 +214,11 @@ public class BoardServiceImpl implements BoardService {
 		boardMapper.deleteComment(commentId);
 		
 	}
+	@Override
+	public void updateComment(CommentDto commentDto) throws Exception {
+		boardMapper.updateComment(commentDto);
+		
+	}
 	
 	
 

@@ -24,4 +24,5 @@ public interface BoardService {
 	List<CommentDto> getComments(int articleno) throws Exception;
 	void writeComment(CommentDto commentDto) throws Exception;
 	void deleteComment(int commentId) throws Exception;
+	void updateComment(CommentDto commentDto) throws Exception;
 }

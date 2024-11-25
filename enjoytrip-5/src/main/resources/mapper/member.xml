@@ -26,7 +26,6 @@
 	    from user
 	    where user_id = #{userId} 
 	      and user_pwd = #{userPwd} 
-	      and is_withdraw=0 
 	</select>
 	
 	
