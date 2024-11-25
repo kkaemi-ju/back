@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.ssafy.trip.search.model.FavoritDto;
 import com.ssafy.trip.search.model.TripDto;
 import com.ssafy.trip.search.model.mapper.TripMapper;
 
@@ -34,6 +35,23 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public List<TripDto> siDoTitleSearch(int sido, String title) throws Exception {
 		return tripMapper.siDoTitleSearch(sido, title);
+	}
+
+	@Override
+	public void createFavorite(FavoritDto favoritDto) throws Exception {
+		tripMapper.createFavorite(favoritDto);
+		
+	}
+	
+	@Override
+	public void deleteFavorite(FavoritDto favoritDto) throws Exception {
+		tripMapper.deleteFavorite(favoritDto);
+		
+	}
+
+	@Override
+	public List<FavoritDto> getFavorite(String userId) throws Exception {
+		return tripMapper.getFavorite(userId);
 	}
 
 }

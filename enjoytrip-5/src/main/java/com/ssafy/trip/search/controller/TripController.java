@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.ssafy.trip.search.model.FavoritDto;
 import com.ssafy.trip.search.model.TripDto;
 import com.ssafy.trip.search.model.service.TripService;
 
@@ -85,5 +86,43 @@ public class TripController {
             log.error("오류 발생", e);
             return ResponseEntity.status(500).build();
         }
+    }
+    @GetMapping("/favorite/{userid}")
+    public ResponseEntity<List<FavoritDto>> getFavorite(@PathVariable("userid") String userId){
+    	List<FavoritDto> favorites = null;
+    	try {
+    		favorites = tripService.getFavorite(userId);
+    		
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return ResponseEntity.ok(favorites);
+    }
+
+    @PostMapping("/favorite")
+    public ResponseEntity<?> createFavorite(@RequestBody FavoritDto favoritDto){
+    	try {
+    		tripService.createFavorite(favoritDto);
+    		return ResponseEntity.ok("Favorit inserted successfully!");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return ResponseEntity.status(500).body("Failed to insert favorite");
+    	}
+    }
+ 
+    @DeleteMapping("/favorite")
+    public ResponseEntity<?> deleteFavorite(
+    		@RequestParam int attractionsNo, 
+    		@RequestParam String userId){
+    	try {
+    		FavoritDto favoritDto = new FavoritDto();
+    		favoritDto.setAttractionsNo(attractionsNo);
+    		favoritDto.setUserId(userId);
+    		tripService.deleteFavorite(favoritDto);
+    		return ResponseEntity.ok("Favorit deleted successfully!");
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return ResponseEntity.status(500).body("Failed to insert favorite");
+    	}
     }
 }
