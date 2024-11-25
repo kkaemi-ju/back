@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.trip.search.model.FavoritDto;
 import com.ssafy.trip.search.model.TripDto;
+import com.ssafy.trip.search.model.service.OpenAIService;
 import com.ssafy.trip.search.model.service.TripService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -18,10 +20,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/attraction")
 public class TripController {
 
+	private final OpenAIService openAIService;
     private final TripService tripService;
 
-    public TripController(TripService tripService) {
+    public TripController(TripService tripService, OpenAIService openAIService) {
         this.tripService = tripService;
+        this.openAIService = openAIService;
     }
 
     @GetMapping("/")
@@ -168,6 +172,22 @@ public class TripController {
             return ResponseEntity.status(500).build();
         }
 
+    }
+    
+    @Value("${openai.api.key}")
+    private String openaiApiKey;
+    
+    @PostMapping("/ai-recommendations")
+    public ResponseEntity<?> getAIRecommendations(@RequestBody Map<String, String> request) {
+        String region = request.get("region");
+        // OpenAI API 호출 구현
+        // OpenAI 클라이언트 초기화 및 API 호출
+        // 결과 반환
+        // OpenAI 서비스 호출
+        List<String> recommendations = openAIService.getRecommendations(region);
+       System.out.println(recommendations);
+        
+        return ResponseEntity.ok().body(Map.of("recommendations", recommendations));
     }
     
 }
