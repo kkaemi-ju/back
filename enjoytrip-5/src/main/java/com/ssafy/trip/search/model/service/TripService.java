@@ -15,5 +15,5 @@ public interface TripService {
 	List<TripDto> siDoTitleSearch(int sido, String title) throws Exception;
 
 	List<TripDto> getTopAttractions() throws Exception;
-	List<TripDto> getInfos(Map<String, Object> params) throws Exception;
+	List<TripDto> getInfos(List<Integer> noList) throws Exception;
 }

@@ -66,8 +66,8 @@
 select attractions_no, count(attractions_no) cnt from day_plan_attractions group by attractions_no order by cnt desc;
 </select>
 
-<select id="getInfos" parameterType="map" resultType="TripDto">
-    select * from attractions 
+<select id="getInfos" parameterType="map" resultMap="TripDtoMap">
+    select no, content_id, title, content_type_id, area_code, si_gun_gu_code, first_image1, first_image2, map_level, latitude, longitude, tel, addr1, addr2, homepage, overview from attractions 
     where no in 
     <foreach item="id" collection="noList" open="(" separator="," close=")">
         #{id}

@@ -19,5 +19,6 @@ public interface TripMapper {
 	List<TripDto> siDoTitleSearch(int sido, String title) throws SQLException;
 
 	List<TripDto> getTopAttractions() throws SQLException;
-	List<TripDto> getInfos(Map<String, Object> params) throws SQLException;
+//	List<TripDto> getInfos(Map<String, Object> params) throws SQLException;
+	List<TripDto> getInfos(List<Integer> noList) throws SQLException;
 }

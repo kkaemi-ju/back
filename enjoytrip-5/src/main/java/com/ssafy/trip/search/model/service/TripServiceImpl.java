@@ -1,5 +1,6 @@
 package com.ssafy.trip.search.model.service;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -44,8 +45,9 @@ public class TripServiceImpl implements TripService {
 	}
 
 	@Override
-	public List<TripDto> getInfos(Map<String, Object> params) throws Exception {
-		return tripMapper.getInfos(params);
+	public List<TripDto> getInfos(List<Integer> noList) throws Exception {
+		return tripMapper.getInfos(noList);
 	}
+	
 
 }

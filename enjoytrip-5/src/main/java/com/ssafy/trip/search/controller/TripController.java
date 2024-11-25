@@ -103,14 +103,11 @@ public class TripController {
  	   
     }
     
-//    @PostMapping("/info") // POST로 변경 (리스트를 전달받을 때 적합)
+    @PostMapping("/info") // POST로 변경 (리스트를 전달받을 때 적합)
     public ResponseEntity<List<TripDto>> getInfos(@RequestBody List<Integer> noList) {
         try {
-            // noList를 서비스 계층에 전달
-            Map<String, Object> params = new HashMap<>();
-            params.put("noList", noList);
 
-            List<TripDto> result = tripService.getInfos(params);
+            List<TripDto> result = tripService.getInfos(noList);
             System.out.println("Result: " + result);
 
             return ResponseEntity.ok(result);
