@@ -100,7 +100,19 @@ public class TripController {
     	}
     	return ResponseEntity.ok(favorites);
     }
+    
+    @GetMapping("/favorite/att/{userid}")
+    public ResponseEntity<List<FavoritDto>> getFavoriteAtt(@PathVariable("userid") String userId){
+    	List<FavoritDto> favorites = null;
+    	try {
+    		favorites = tripService.getFavoriteAtt(userId);
 
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return ResponseEntity.ok(favorites);
+    }
+    
     @PostMapping("/favorite")
     public ResponseEntity<?> createFavorite(@RequestBody FavoritDto favoritDto){
     	try {
@@ -126,7 +138,7 @@ public class TripController {
     		e.printStackTrace();
     		return ResponseEntity.status(500).body("Failed to insert favorite");
     	}
-
+    }
     // 랭킹 여행지
     @GetMapping("/top")
     public ResponseEntity<List<TripDto>> getAttractions(){
@@ -157,4 +169,5 @@ public class TripController {
         }
 
     }
+    
 }

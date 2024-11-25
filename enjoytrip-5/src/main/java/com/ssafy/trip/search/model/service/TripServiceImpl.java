@@ -67,5 +67,10 @@ public class TripServiceImpl implements TripService {
 		return tripMapper.getInfos(noList);
 	}
 
+	@Override
+	public List<FavoritDto> getFavoriteAtt(String userId) throws Exception {
+		return tripMapper.getFavoriteAtt(userId);
+	}
+
 
 }

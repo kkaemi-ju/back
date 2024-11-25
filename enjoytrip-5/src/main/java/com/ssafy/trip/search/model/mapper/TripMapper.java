@@ -31,4 +31,7 @@ public interface TripMapper {
 //	List<TripDto> getInfos(Map<String, Object> params) throws SQLException;
 	List<TripDto> getInfos(List<Integer> noList) throws SQLException;
 
+	List<FavoritDto> getFavoriteAtt(String userId) throws SQLException;
+
+
 }

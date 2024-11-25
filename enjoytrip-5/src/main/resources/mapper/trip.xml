@@ -81,17 +81,23 @@
 	</select>
 
 
-<select id="getTopAttractions" resultType="map">
-
-select attractions_no, count(attractions_no) cnt from day_plan_attractions group by attractions_no order by cnt desc;
-</select>
-
-<select id="getInfos" parameterType="map" resultMap="TripDtoMap">
-    select no, content_id, title, content_type_id, area_code, si_gun_gu_code, first_image1, first_image2, map_level, latitude, longitude, tel, addr1, addr2, homepage, overview from attractions
-    where no in
-    <foreach item="id" collection="noList" open="(" separator="," close=")">
-        #{id}
-    </foreach>
-</select>
-
+	<select id="getTopAttractions" resultType="map">
+	
+	select attractions_no, count(attractions_no) cnt from day_plan_attractions group by attractions_no order by cnt desc;
+	</select>
+	
+	<select id="getInfos" parameterType="map" resultMap="TripDtoMap">
+	    select no, content_id, title, content_type_id, area_code, si_gun_gu_code, first_image1, first_image2, map_level, latitude, longitude, tel, addr1, addr2, homepage, overview from attractions
+	    where no in
+	    <foreach item="id" collection="noList" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</select>
+	<!-- 사용자 찜목록에 있는 관광지 조회 -->
+	<select id="getFavoriteAtt" resultMap="TripDtoMap">
+        SELECT a.*
+        FROM attractions a
+        JOIN favorite f ON a.no = f.attractions_no
+        WHERE f.user_id = #{userId}
+    </select>
 </mapper>

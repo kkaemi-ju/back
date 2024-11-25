@@ -29,4 +29,6 @@ public interface TripService {
 	List<TripDto> getTopAttractions() throws Exception;
 	List<TripDto> getInfos(List<Integer> noList) throws Exception;
 
+	List<FavoritDto> getFavoriteAtt(String userId) throws Exception;
+
 }
