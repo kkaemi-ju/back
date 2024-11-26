@@ -51,7 +51,7 @@ public class OpenAIService {
             Map.of("role", "user", "content", "추천받은 지역: " + region + command)
         ));
         requestBody.put("temperature", 0.7); // 고정 값 또는 설정에서 로드
-        requestBody.put("max_tokens", 500);
+        requestBody.put("max_tokens", 300);
 
         HttpEntity<Map<String, Object>> requestEntity = new HttpEntity<>(requestBody, headers);
 
