@@ -29,7 +29,7 @@
 	</select>
 	
 	
-	<select id="userInfo" parameterType="string" resultMap="member">
+	<select id="userInfo" parameterType="String" resultMap="member">
 		select user_name, user_id, user_email, created_at
 		from user
 		where user_id = #{userId}

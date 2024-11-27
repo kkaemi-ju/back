@@ -51,7 +51,6 @@ public class MypageController {
     public ResponseEntity<?> update(@RequestBody MemberDto memberDto) {
         try {
             mypageService.modifyMypage(memberDto);
-           System.out.println(memberDto);
             MemberDto members = memberService.userInfo(memberDto.getUserId());
             return ResponseEntity
                     .status(HttpStatus.OK) // HTTP 상태 코드 설정
